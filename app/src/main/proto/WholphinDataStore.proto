@@ -193,6 +193,9 @@ message InterfacePreferences {
   bool show_logos = 13;
   SearchPreferences search_preferences = 14;
   repeated DisplayToggle display_toggles = 15;
+  int32 ui_scale_percent = 16;
+  int32 card_size_percent = 17;
+  int32 spacing_percent = 18;
 }
 
 message AdvancedPreferences {

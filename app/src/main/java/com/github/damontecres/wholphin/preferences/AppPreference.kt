@@ -516,6 +516,55 @@ sealed interface AppPreference<Pref, T> {
                 summaryOff = R.string.disabled,
             )
 
+        val UiScale =
+            AppSliderPreference<AppPreferences>(
+                title = R.string.ui_scale,
+                defaultValue = 100,
+                min = 50,
+                max = 150,
+                interval = 5,
+                getter = { it.interfacePreferences.uiScalePercent.toLong() },
+                setter = { prefs, value ->
+                    prefs.updateInterfacePreferences { uiScalePercent = value.toInt() }
+                },
+                summarizer = { it?.let { "$it%" } },
+            )
+
+        val CardSize =
+            AppSliderPreference<AppPreferences>(
+                title = R.string.card_size,
+                defaultValue = 100,
+                min = 50,
+                max = 150,
+                interval = 5,
+                getter = { it.interfacePreferences.cardSizePercent.toLong() },
+                setter = { prefs, value ->
+                    prefs.updateInterfacePreferences { cardSizePercent = value.toInt() }
+                },
+                summarizer = { it?.let { "$it%" } },
+            )
+
+        val Spacing =
+            AppSliderPreference<AppPreferences>(
+                title = R.string.spacing,
+                defaultValue = 100,
+                min = 25,
+                max = 175,
+                interval = 10,
+                getter = { it.interfacePreferences.spacingPercent.toLong() },
+                setter = { prefs, value ->
+                    prefs.updateInterfacePreferences { spacingPercent = value.toInt() }
+                },
+                summarizer = { it?.let { "$it%" } },
+            )
+
+        val DisplaySizePref =
+            AppDestinationPreference<AppPreferences>(
+                title = R.string.display_size,
+                summary = R.string.display_size_summary,
+                destination = Destination.DisplaySize,
+            )
+
         val DisplayTogglesPref =
             AppMultiChoicePreference<AppPreferences, DisplayToggle>(
                 title = R.string.display_toggles_title,
@@ -1086,6 +1135,7 @@ val basicPreferences =
                     AppPreference.SignInAuto,
                     AppPreference.RememberSelectedTab,
                     AppPreference.PlayThemeMusic,
+                    AppPreference.DisplaySizePref,
                     AppPreference.SubtitleStyle,
                     AppPreference.ThemeColors,
                     AppPreference.ScreensaverSettings,

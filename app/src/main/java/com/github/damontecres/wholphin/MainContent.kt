@@ -18,6 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -60,7 +62,19 @@ fun MainContent(
 //                            setupNavigationManager.backStack = backStack
         val interfaceCustomization =
             remember(appPreferences) { InterfaceCustomization(appPreferences) }
-        CompositionLocalProvider(LocalInterfaceCustomization provides interfaceCustomization) {
+        val baseDensity = LocalDensity.current
+        val scaledDensity =
+            remember(baseDensity, interfaceCustomization.uiScalePercent) {
+                val factor = interfaceCustomization.uiScalePercent / 100f
+                Density(
+                    density = baseDensity.density * factor,
+                    fontScale = baseDensity.fontScale * factor,
+                )
+            }
+        CompositionLocalProvider(
+            LocalInterfaceCustomization provides interfaceCustomization,
+            LocalDensity provides scaledDensity,
+        ) {
             NavDisplay(
                 backStack = backStack,
                 onBack = { backStack.removeLastOrNull() },

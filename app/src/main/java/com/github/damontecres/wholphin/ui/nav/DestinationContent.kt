@@ -45,6 +45,7 @@ import com.github.damontecres.wholphin.ui.main.settings.HomeSettingsPage
 import com.github.damontecres.wholphin.ui.playback.PlayExternalPage
 import com.github.damontecres.wholphin.ui.playback.PlaybackPage
 import com.github.damontecres.wholphin.ui.preferences.PreferencesPage
+import com.github.damontecres.wholphin.ui.preferences.displaysize.DisplaySizePage
 import com.github.damontecres.wholphin.ui.preferences.subtitle.SubtitleStylePage
 import com.github.damontecres.wholphin.ui.setup.InstallUpdatePage
 import com.github.damontecres.wholphin.ui.slideshow.SlideshowPage
@@ -123,6 +124,13 @@ fun DestinationContent(
             SubtitleStylePage(
                 preferences.appPreferences,
                 destination.hdr,
+                modifier,
+            )
+        }
+
+        is Destination.DisplaySize -> {
+            DisplaySizePage(
+                preferences.appPreferences,
                 modifier,
             )
         }
