@@ -44,57 +44,49 @@ class InterfaceHelpersTest {
     }
 
     @Test
-    fun `resolveCardHeight uses global when heightDp is sentinel 0`() {
-        assertEquals(172, resolveCardHeight(0, 100, 172, Cards.HEIGHT_2X3_DP))
-        assertEquals(258, resolveCardHeight(0, 100, 258, Cards.HEIGHT_2X3_DP)) // global at 150%
+    fun `resolveCardHeight uses natural base when heightDp is sentinel 0`() {
+        // Sentinel 0 falls back to the natural base; global percent scales it.
+        assertEquals(172, resolveCardHeight(0, 100, 100, Cards.HEIGHT_2X3_DP))
+        assertEquals(258, resolveCardHeight(0, 100, 150, Cards.HEIGHT_2X3_DP))
     }
 
     @Test
-    fun `resolveCardHeight uses global when heightDp equals legacy default 172`() {
-        // A1 fix: legacy stored heightDp=172 (the pre-PR default) is treated as "no override".
-        assertEquals(172, resolveCardHeight(Cards.HEIGHT_2X3_DP, 100, 172, Cards.HEIGHT_2X3_DP))
-        assertEquals(258, resolveCardHeight(Cards.HEIGHT_2X3_DP, 100, 258, Cards.HEIGHT_2X3_DP))
+    fun `resolveCardHeight treats stored heightDp matching natural base as no override`() {
+        // Pre-PR builds wrote heightDp=172 (the poster natural base) into JSON. Episode rows
+        // wrote 128. Both must be transparent to the global slider so existing users get
+        // immediate scaling without a reset.
+        assertEquals(172, resolveCardHeight(Cards.HEIGHT_2X3_DP, 100, 100, Cards.HEIGHT_2X3_DP))
+        assertEquals(258, resolveCardHeight(Cards.HEIGHT_2X3_DP, 100, 150, Cards.HEIGHT_2X3_DP))
+        assertEquals(128, resolveCardHeight(Cards.HEIGHT_EPISODE, 100, 100, Cards.HEIGHT_EPISODE))
+        assertEquals(192, resolveCardHeight(Cards.HEIGHT_EPISODE, 100, 150, Cards.HEIGHT_EPISODE))
     }
 
     @Test
-    fun `resolveCardHeight honours non-default per-row override`() {
-        // Display Presets set absolute per-row heights like 128 or 148.
-        assertEquals(128, resolveCardHeight(128, 100, 172, Cards.HEIGHT_2X3_DP))
-        assertEquals(148, resolveCardHeight(148, 100, 172, Cards.HEIGHT_2X3_DP))
+    fun `resolveCardHeight honours per-row override`() {
+        // Preset rows (148) and live-TV (96) take precedence over the natural base.
+        assertEquals(148, resolveCardHeight(148, 100, 100, Cards.HEIGHT_2X3_DP))
+        assertEquals(96, resolveCardHeight(96, 100, 100, Cards.HEIGHT_EPISODE))
     }
 
     @Test
-    fun `resolveCardHeight applies cardSizeMultiplier on top of global`() {
-        // Global card height 172, multiplier 120 -> 206 dp.
-        assertEquals(206, resolveCardHeight(0, 120, 172, Cards.HEIGHT_2X3_DP))
-        // Global 172, multiplier 75 -> 129.
-        assertEquals(129, resolveCardHeight(0, 75, 172, Cards.HEIGHT_2X3_DP))
+    fun `resolveCardHeight applies global percent on top of per-row override`() {
+        // Preset 148 with global 150% renders at 222dp. The user moves one slider; every
+        // row, including their preset-set ones, follows.
+        assertEquals(222, resolveCardHeight(148, 100, 150, Cards.HEIGHT_2X3_DP))
+        // Same at 50%: preset 148 * 0.5 = 74.
+        assertEquals(74, resolveCardHeight(148, 100, 50, Cards.HEIGHT_2X3_DP))
+        // Live-TV 96 * 125% = 120.
+        assertEquals(120, resolveCardHeight(96, 100, 125, Cards.HEIGHT_EPISODE))
     }
 
     @Test
-    fun `resolveCardHeight applies cardSizeMultiplier on top of per-row override`() {
-        // Preset row at 148 with multiplier 120 -> 177.
-        assertEquals(177, resolveCardHeight(148, 120, 172, Cards.HEIGHT_2X3_DP))
-        // Episode preset at 128 with multiplier 50 -> 64.
-        assertEquals(64, resolveCardHeight(128, 50, 172, Cards.HEIGHT_2X3_DP))
-    }
-
-    @Test
-    fun `resolveCardHeight uses global when heightDp equals episode natural base 128`() {
-        // For an episode-aspect row, the caller passes baseCardHeightDp = HEIGHT_EPISODE (128)
-        // and globalCardHeightDp = episodeCardHeightDp. The stored heightDp = 128 then must
-        // not be treated as an override - the global Card slider should reach this row.
-        assertEquals(128, resolveCardHeight(Cards.HEIGHT_EPISODE, 100, 128, Cards.HEIGHT_EPISODE))
-        // Global at 150%: episodeCardHeightDp = 128 * 150 / 100 = 192.
-        assertEquals(192, resolveCardHeight(Cards.HEIGHT_EPISODE, 100, 192, Cards.HEIGHT_EPISODE))
-    }
-
-    @Test
-    fun `resolveCardHeight honours per-row override even when row is episode-natural`() {
-        // A user who manually drags an episode row to heightDp = 200 still wins over the global.
-        assertEquals(200, resolveCardHeight(200, 100, 192, Cards.HEIGHT_EPISODE))
-        // Live-TV-style 96.dp override stays absolute.
-        assertEquals(96, resolveCardHeight(96, 100, 192, Cards.HEIGHT_EPISODE))
+    fun `resolveCardHeight applies cardSizeMultiplier and global percent together`() {
+        // Natural 172 * global 120% * per-row 110% = 226.
+        assertEquals(226, resolveCardHeight(0, 110, 120, Cards.HEIGHT_2X3_DP))
+        // Preset 148 * global 150% * per-row 110% = 244.
+        assertEquals(244, resolveCardHeight(148, 110, 150, Cards.HEIGHT_2X3_DP))
+        // Per-row alone (global at 100%) still works: preset 148 * 120% = 177.
+        assertEquals(177, resolveCardHeight(148, 120, 100, Cards.HEIGHT_2X3_DP))
     }
 
     @Test
