@@ -69,6 +69,7 @@ import com.github.damontecres.wholphin.ui.preferences.PreferencesViewModel
 import com.github.damontecres.wholphin.ui.preferences.SliderPreference
 import com.github.damontecres.wholphin.ui.tryRequestFocus
 import com.github.damontecres.wholphin.ui.util.ResStringProvider
+import com.github.damontecres.wholphin.ui.util.scaledDensity
 import com.github.damontecres.wholphin.ui.util.withinBoundsOrDefault
 import com.github.damontecres.wholphin.util.HomeRowLoadingState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -184,13 +185,7 @@ fun DisplaySizePage(
             )
         }
     val previewDensity =
-        remember(systemDensity, uiScale) {
-            val factor = uiScale / 100f
-            Density(
-                density = systemDensity.density * factor,
-                fontScale = systemDensity.fontScale,
-            )
-        }
+        remember(systemDensity, uiScale) { scaledDensity(systemDensity, uiScale) }
 
     CompositionLocalProvider(LocalDensity provides pageDensity) {
         Row(

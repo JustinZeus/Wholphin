@@ -1,10 +1,12 @@
 package com.github.damontecres.wholphin.ui.util
 
+import androidx.compose.ui.unit.Density
 import com.github.damontecres.wholphin.data.model.HomeRowConfig
 import com.github.damontecres.wholphin.data.model.HomeRowViewOptions
 import com.github.damontecres.wholphin.preferences.AppPreference
 import com.github.damontecres.wholphin.preferences.AppPreferences
 import com.github.damontecres.wholphin.services.migrateLegacyRowSpacing
+import com.github.damontecres.wholphin.ui.AspectRatio
 import com.github.damontecres.wholphin.ui.Cards
 import org.jellyfin.sdk.model.UUID
 import org.junit.Assert.assertEquals
@@ -96,23 +98,47 @@ class InterfaceHelpersTest {
     }
 
     @Test
-    fun `UI scale must not double-apply on text`() {
-        // sp rendering = sp.value * density * fontScale. MainContent's scaled Density
-        // multiplies density by factor and leaves fontScale alone; at slider 150% text must
-        // grow by 1.5x, not 1.5*1.5 = 2.25x. Regression guard for the original bug where both
-        // were multiplied.
-        val baseDensity = 2.0f
-        val baseFontScale = 1.0f
-        val factor = 1.5f
-        // The pattern MainContent.kt uses after the fix:
-        val scaledDensity = baseDensity * factor
-        val scaledFontScale = baseFontScale
-        val baseTextPx = 14f * baseDensity * baseFontScale
-        val scaledTextPx = 14f * scaledDensity * scaledFontScale
-        assertEquals(1.5f * baseTextPx, scaledTextPx, 0.001f)
-        // Double-application (the bug) would have produced 2.25x.
-        val buggyTextPx = 14f * (baseDensity * factor) * (baseFontScale * factor)
-        assertEquals(2.25f * baseTextPx, buggyTextPx, 0.001f)
+    fun `naturalCardBaseDp maps WIDE to episode base`() {
+        assertEquals(Cards.HEIGHT_EPISODE, naturalCardBaseDp(AspectRatio.WIDE))
+    }
+
+    @Test
+    fun `naturalCardBaseDp maps TALL, SQUARE, FOUR_THREE to poster base`() {
+        // SQUARE and FOUR_THREE piggyback on the poster global. Music preset rows (SQUARE)
+        // store their own absolute heightDp = 100 so they still hit the override branch -
+        // the natural base just supplies the fallback if a row ever stores no override.
+        assertEquals(Cards.HEIGHT_2X3_DP, naturalCardBaseDp(AspectRatio.TALL))
+        assertEquals(Cards.HEIGHT_2X3_DP, naturalCardBaseDp(AspectRatio.SQUARE))
+        assertEquals(Cards.HEIGHT_2X3_DP, naturalCardBaseDp(AspectRatio.FOUR_THREE))
+    }
+
+    @Test
+    fun `scaledDensity scales density linearly and leaves fontScale alone`() {
+        val base = Density(density = 2.0f, fontScale = 1.0f)
+        val scaled = scaledDensity(base, 150)
+        // density grows by 1.5 - so dp layouts scale 1.5x.
+        assertEquals(3.0f, scaled.density, 0.001f)
+        // fontScale stays put - sp text is (density * fontScale) so it also scales linearly.
+        // Scaling fontScale too would render text at 1.5^2 = 2.25x.
+        assertEquals(1.0f, scaled.fontScale, 0.001f)
+    }
+
+    @Test
+    fun `scaledDensity at 100 percent returns identity`() {
+        val base = Density(density = 2.0f, fontScale = 1.2f)
+        val scaled = scaledDensity(base, 100)
+        assertEquals(base.density, scaled.density, 0.001f)
+        assertEquals(base.fontScale, scaled.fontScale, 0.001f)
+    }
+
+    @Test
+    fun `scaledDensity preserves user accessibility fontScale across UI scale changes`() {
+        // A user with system fontScale 1.3x (accessibility setting) bumping UI scale to 75%
+        // should keep fontScale = 1.3 - the UI scale slider is independent of accessibility.
+        val base = Density(density = 2.0f, fontScale = 1.3f)
+        val scaled = scaledDensity(base, 75)
+        assertEquals(1.5f, scaled.density, 0.001f)
+        assertEquals(1.3f, scaled.fontScale, 0.001f)
     }
 
     @Test
