@@ -68,7 +68,7 @@ fun MainContent(
                 val factor = interfaceCustomization.uiScalePercent / 100f
                 Density(
                     density = baseDensity.density * factor,
-                    fontScale = baseDensity.fontScale * factor,
+                    fontScale = baseDensity.fontScale,
                 )
             }
         CompositionLocalProvider(

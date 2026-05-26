@@ -369,7 +369,7 @@ fun HomeRowGrid(
                                 )
                             },
                             columns = if (viewOptions.aspectRatio.ratio > 1f) 4 else 6,
-                            spacing = LocalInterfaceCustomization.current.spacingDp.dp,
+                            spacing = (LocalInterfaceCustomization.current.spacingDp * viewOptions.spacingMultiplier / 100).dp,
                             bringIntoViewSpec = LocalBringIntoViewSpec.current,
                         )
                     }

@@ -74,7 +74,7 @@ fun CollectionFolderGrid(
         ) {
             val defaultBringIntoViewSpec = LocalBringIntoViewSpec.current
             val density = LocalDensity.current
-            val spacingDp = LocalInterfaceCustomization.current.spacingDp
+            val spacingDp = viewOptions.spacing * LocalInterfaceCustomization.current.spacingPercent / 100
             AnimatedVisibility(viewOptions.showDetails) {
                 HomePageHeader(
                     item = focusedItem,

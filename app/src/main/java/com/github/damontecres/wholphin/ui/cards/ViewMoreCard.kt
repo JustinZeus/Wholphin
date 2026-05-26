@@ -40,6 +40,7 @@ import com.github.damontecres.wholphin.ui.Cards
 import com.github.damontecres.wholphin.ui.PreviewTvSpec
 import com.github.damontecres.wholphin.ui.enableMarquee
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import kotlinx.coroutines.delay
 
 @Composable
@@ -49,7 +50,10 @@ fun ViewMoreCard(
     modifier: Modifier = Modifier,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     aspectRatio: AspectRatio = AspectRatio.TALL,
-    size: DpSize = DpSize(width = Cards.height2x3 * aspectRatio.ratio, height = Cards.height2x3),
+    size: DpSize =
+        LocalInterfaceCustomization.current.cardHeightDp.dp.let { h ->
+            DpSize(width = h * aspectRatio.ratio, height = h)
+        },
     showTitle: Boolean = true,
 ) {
     val focused by interactionSource.collectIsFocusedAsState()

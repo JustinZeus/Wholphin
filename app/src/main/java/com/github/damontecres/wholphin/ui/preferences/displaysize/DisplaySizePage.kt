@@ -169,13 +169,11 @@ fun DisplaySizePage(
     val posters by previewViewModel.posters.collectAsState()
     val episodes by previewViewModel.episodes.collectAsState()
 
-    // Snapshot the page's own density on first composition so the slider rail
-    // and labels stay fixed while the user drags UI scale.
+    // Freezes the rail width and slider labels so they don't reflow under the user's finger
+    // while dragging UI scale.
     val ambientDensity = LocalDensity.current
     val pageDensity = remember { ambientDensity }
 
-    // Resolve back to system base so the preview density is independent of the
-    // snapshotted page density and reflects the draft uiScale faithfully.
     val context = LocalContext.current
     val systemDensity =
         remember {
@@ -190,7 +188,7 @@ fun DisplaySizePage(
             val factor = uiScale / 100f
             Density(
                 density = systemDensity.density * factor,
-                fontScale = systemDensity.fontScale * factor,
+                fontScale = systemDensity.fontScale,
             )
         }
 

@@ -5,16 +5,22 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.damontecres.wholphin.data.model.HomeRowViewOptions
 import com.github.damontecres.wholphin.preferences.AppSliderPreference
+import com.github.damontecres.wholphin.ui.AspectRatio
 import com.github.damontecres.wholphin.ui.Cards
 
 @Composable
-internal fun HomeRowViewOptions.resolvedCardHeight(): Dp =
-    resolveCardHeight(
+internal fun HomeRowViewOptions.resolvedCardHeight(): Dp {
+    val custom = LocalInterfaceCustomization.current
+    val isWide = aspectRatio == AspectRatio.WIDE
+    val naturalBase = if (isWide) Cards.HEIGHT_EPISODE else Cards.HEIGHT_2X3_DP
+    val globalForThisRow = if (isWide) custom.episodeCardHeightDp else custom.cardHeightDp
+    return resolveCardHeight(
         heightDp = heightDp,
         cardSizeMultiplier = cardSizeMultiplier,
-        globalCardHeightDp = LocalInterfaceCustomization.current.cardHeightDp,
-        baseCardHeightDp = Cards.HEIGHT_2X3_DP,
+        globalCardHeightDp = globalForThisRow,
+        baseCardHeightDp = naturalBase,
     ).dp
+}
 
 internal fun resolveCardHeight(
     heightDp: Int,
