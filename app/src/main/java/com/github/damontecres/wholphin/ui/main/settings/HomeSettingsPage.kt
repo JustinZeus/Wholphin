@@ -261,7 +261,6 @@ fun HomeSettingsPage(
                                             viewModel.preferencesDataStore.updateData { newPrefs }
                                         }
                                     },
-                                    onClickResize = { viewModel.resizeCards(it) },
                                     onClickSave = {
                                         showConfirmDialog =
                                             ShowConfirm(R.string.overwrite_server_settings) {

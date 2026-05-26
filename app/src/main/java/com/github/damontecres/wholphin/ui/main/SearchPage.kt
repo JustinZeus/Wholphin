@@ -76,7 +76,6 @@ import com.github.damontecres.wholphin.services.NavigationManager
 import com.github.damontecres.wholphin.services.SeerrService
 import com.github.damontecres.wholphin.services.UserPreferencesService
 import com.github.damontecres.wholphin.ui.AspectRatios
-import com.github.damontecres.wholphin.ui.Cards
 import com.github.damontecres.wholphin.ui.RequestOrRestoreFocus
 import com.github.damontecres.wholphin.ui.SlimItemFields
 import com.github.damontecres.wholphin.ui.cards.DiscoverItemCard
@@ -101,6 +100,7 @@ import com.github.damontecres.wholphin.ui.onMain
 import com.github.damontecres.wholphin.ui.preferences.SwitchColors
 import com.github.damontecres.wholphin.ui.rememberPosition
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import com.github.damontecres.wholphin.util.ExceptionHandler
 import com.github.damontecres.wholphin.util.SearchRelevance
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -746,7 +746,7 @@ fun SearchPage(
                                         onClick.invoke()
                                     },
                                     onLongClick = onLongClick,
-                                    imageHeight = Cards.heightEpisode,
+                                    imageHeight = LocalInterfaceCustomization.current.episodeCardHeightDp.dp,
                                     aspectRatio = AspectRatios.SQUARE,
                                     showImageOverlay = true,
                                     modifier = mod,
@@ -770,7 +770,7 @@ fun SearchPage(
                                         onClick.invoke()
                                     },
                                     onLongClick = onLongClick,
-                                    imageHeight = Cards.heightEpisode,
+                                    imageHeight = LocalInterfaceCustomization.current.episodeCardHeightDp.dp,
                                     aspectRatio = AspectRatios.SQUARE,
                                     showImageOverlay = true,
                                     modifier = mod,
@@ -794,7 +794,7 @@ fun SearchPage(
                                         onClick.invoke()
                                     },
                                     onLongClick = onLongClick,
-                                    imageHeight = Cards.heightEpisode,
+                                    imageHeight = LocalInterfaceCustomization.current.episodeCardHeightDp.dp,
                                     aspectRatio = AspectRatios.SQUARE,
                                     showImageOverlay = true,
                                     modifier = mod,
@@ -1069,7 +1069,7 @@ fun LazyListScope.searchResultRow(
                 onClick.invoke()
             },
             onLongClick = onLongClick,
-            imageHeight = Cards.height2x3,
+            imageHeight = LocalInterfaceCustomization.current.cardHeightDp.dp,
             showImageOverlay = true,
             modifier = mod,
         )

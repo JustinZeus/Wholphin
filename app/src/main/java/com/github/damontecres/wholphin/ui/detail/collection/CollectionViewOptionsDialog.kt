@@ -41,7 +41,6 @@ import com.github.damontecres.wholphin.ui.components.ViewOptions.Companion.ViewO
 import com.github.damontecres.wholphin.ui.components.ViewOptions.Companion.ViewOptionsImageType
 import com.github.damontecres.wholphin.ui.components.ViewOptions.Companion.ViewOptionsReset
 import com.github.damontecres.wholphin.ui.components.ViewOptions.Companion.ViewOptionsShowTitles
-import com.github.damontecres.wholphin.ui.components.ViewOptions.Companion.ViewOptionsSpacing
 import com.github.damontecres.wholphin.ui.preferences.ComposablePreference
 import com.github.damontecres.wholphin.ui.tryRequestFocus
 import kotlinx.serialization.Serializable
@@ -159,7 +158,6 @@ data class CollectionViewOptions(
                 ViewOptionsDetailHeader,
                 ViewOptionsShowTitles,
                 ViewOptionsColumns,
-                ViewOptionsSpacing,
                 ViewOptionsContentScale,
                 ViewOptionsReset,
             )

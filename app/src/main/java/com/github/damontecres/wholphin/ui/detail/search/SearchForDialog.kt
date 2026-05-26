@@ -41,7 +41,6 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.github.damontecres.wholphin.R
 import com.github.damontecres.wholphin.data.model.BaseItem
-import com.github.damontecres.wholphin.ui.Cards
 import com.github.damontecres.wholphin.ui.cards.ItemRow
 import com.github.damontecres.wholphin.ui.cards.SeasonCard
 import com.github.damontecres.wholphin.ui.components.BasicDialog
@@ -49,6 +48,7 @@ import com.github.damontecres.wholphin.ui.components.ErrorMessage
 import com.github.damontecres.wholphin.ui.components.SearchEditTextBox
 import com.github.damontecres.wholphin.ui.components.VoiceSearchButton
 import com.github.damontecres.wholphin.ui.main.SearchResult
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import kotlinx.coroutines.delay
 import org.jellyfin.sdk.model.api.BaseItemKind
 
@@ -219,7 +219,7 @@ fun SearchForContent(
                                     onClick.invoke()
                                 },
                                 onLongClick = onLongClick,
-                                imageHeight = Cards.height2x3,
+                                imageHeight = LocalInterfaceCustomization.current.cardHeightDp.dp,
                                 modifier = mod,
                             )
                         },

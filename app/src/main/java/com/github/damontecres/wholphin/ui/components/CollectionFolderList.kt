@@ -63,6 +63,7 @@ import com.github.damontecres.wholphin.ui.launchIO
 import com.github.damontecres.wholphin.ui.rememberInt
 import com.github.damontecres.wholphin.ui.roundMinutes
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.jellyfin.sdk.model.api.BaseItemKind
@@ -273,9 +274,10 @@ fun CollectionFolderContent(
     onPositionChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val globalSpacingPercent = LocalInterfaceCustomization.current.spacingPercent
     LazyColumn(
         state = listState,
-        verticalArrangement = Arrangement.spacedBy(viewOptions.spacing.dp),
+        verticalArrangement = Arrangement.spacedBy((viewOptions.spacing * globalSpacingPercent / 100).dp),
         modifier = modifier.focusRestorer(positionFocusRequester),
     ) {
         itemsIndexed(items) { index, item ->

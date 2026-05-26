@@ -42,6 +42,7 @@ fun <T> ItemRow(
     ) -> Unit,
     modifier: Modifier = Modifier,
     horizontalPadding: Dp = 16.dp,
+    cardSpacing: Dp = horizontalPadding,
     showViewMore: Boolean = false,
     viewMoreCardContent: @Composable (Modifier) -> Unit = {},
 ) {
@@ -66,7 +67,7 @@ fun <T> ItemRow(
 
         LazyRow(
             state = state,
-            horizontalArrangement = Arrangement.spacedBy(horizontalPadding),
+            horizontalArrangement = Arrangement.spacedBy(cardSpacing),
             contentPadding = PaddingValues(horizontal = horizontalPadding, vertical = 8.dp),
             modifier =
                 Modifier

@@ -37,6 +37,9 @@ data class InterfaceCustomization(
     val cardHeightDp: Int
         get() = Cards.HEIGHT_2X3_DP * cardSizePercent / 100
 
+    val episodeCardHeightDp: Int
+        get() = Cards.HEIGHT_EPISODE * cardSizePercent / 100
+
     val spacingDp: Int
         get() = BASE_SPACING_DP * spacingPercent / 100
 }

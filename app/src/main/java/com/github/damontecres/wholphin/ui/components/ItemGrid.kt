@@ -24,6 +24,7 @@ import com.github.damontecres.wholphin.ui.detail.CardGrid
 import com.github.damontecres.wholphin.ui.launchIO
 import com.github.damontecres.wholphin.ui.nav.Destination
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import com.github.damontecres.wholphin.util.ApiRequestPager
 import com.github.damontecres.wholphin.util.DataLoadingState
 import com.github.damontecres.wholphin.util.RequestHandler
@@ -140,7 +141,7 @@ fun ItemGrid(
                     showJumpButtons = false,
                     showLetterButtons = false,
                     initialPosition = destination.initialPosition,
-                    spacing = destination.viewOptions.spacing.dp,
+                    spacing = LocalInterfaceCustomization.current.spacingDp.dp,
                     cardContent = @Composable { (item, index, onClick, onLongClick, widthPx, mod) ->
                         GridCard(
                             item = item,

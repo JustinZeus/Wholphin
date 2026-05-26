@@ -48,7 +48,6 @@ import com.github.damontecres.wholphin.data.model.Trailer
 import com.github.damontecres.wholphin.data.model.studioNames
 import com.github.damontecres.wholphin.preferences.UserPreferences
 import com.github.damontecres.wholphin.services.TrailerService
-import com.github.damontecres.wholphin.ui.Cards
 import com.github.damontecres.wholphin.ui.RequestOrRestoreFocus
 import com.github.damontecres.wholphin.ui.cards.ExtrasRow
 import com.github.damontecres.wholphin.ui.cards.ItemRow
@@ -82,6 +81,7 @@ import com.github.damontecres.wholphin.ui.discover.DiscoverRowData
 import com.github.damontecres.wholphin.ui.letNotEmpty
 import com.github.damontecres.wholphin.ui.nav.Destination
 import com.github.damontecres.wholphin.ui.rememberInt
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import com.github.damontecres.wholphin.ui.util.ResStringProvider
 import com.github.damontecres.wholphin.util.DataLoadingState
 import com.github.damontecres.wholphin.util.DiscoverRequestType
@@ -527,7 +527,7 @@ fun SeriesDetailsContent(
                                 item = item,
                                 onClick = onClick,
                                 onLongClick = onLongClick,
-                                imageHeight = Cards.height2x3,
+                                imageHeight = LocalInterfaceCustomization.current.cardHeightDp.dp,
                                 imageWidth = Dp.Unspecified,
                                 showImageOverlay = true,
                                 modifier = mod,
@@ -612,7 +612,7 @@ fun SeriesDetailsContent(
                                     onLongClick = onLongClick,
                                     modifier = mod,
                                     showImageOverlay = true,
-                                    imageHeight = Cards.height2x3,
+                                    imageHeight = LocalInterfaceCustomization.current.cardHeightDp.dp,
                                     imageWidth = Dp.Unspecified,
                                 )
                             },

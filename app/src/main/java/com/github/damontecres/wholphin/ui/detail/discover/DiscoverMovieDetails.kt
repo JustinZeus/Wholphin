@@ -48,7 +48,6 @@ import com.github.damontecres.wholphin.data.model.hasPermission
 import com.github.damontecres.wholphin.preferences.UserPreferences
 import com.github.damontecres.wholphin.services.SeerrUserConfig
 import com.github.damontecres.wholphin.services.TrailerService
-import com.github.damontecres.wholphin.ui.Cards
 import com.github.damontecres.wholphin.ui.cards.DiscoverItemCard
 import com.github.damontecres.wholphin.ui.cards.DiscoverPersonRow
 import com.github.damontecres.wholphin.ui.cards.ItemRow
@@ -63,6 +62,7 @@ import com.github.damontecres.wholphin.ui.data.ItemDetailsDialogInfo
 import com.github.damontecres.wholphin.ui.nav.Destination
 import com.github.damontecres.wholphin.ui.rememberInt
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import com.github.damontecres.wholphin.util.DataLoadingState
 import com.github.damontecres.wholphin.util.ExceptionHandler
 import kotlinx.coroutines.launch
@@ -416,7 +416,7 @@ fun TrailerRow(
                             item = item.baseItem,
                             onClick = { onClickTrailer.invoke(item) },
                             onLongClick = {},
-                            imageHeight = Cards.height2x3,
+                            imageHeight = LocalInterfaceCustomization.current.cardHeightDp.dp,
                             imageWidth = Dp.Unspecified,
                             showImageOverlay = false,
                             modifier = cardModifier,
@@ -443,7 +443,7 @@ fun TrailerRow(
                             onLongClick = {},
                             modifier = cardModifier,
                             showImageOverlay = false,
-                            imageHeight = Cards.height2x3,
+                            imageHeight = LocalInterfaceCustomization.current.cardHeightDp.dp,
                             imageWidth = Dp.Unspecified,
                         )
                     }

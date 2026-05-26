@@ -42,6 +42,7 @@ import com.github.damontecres.wholphin.ui.detail.CardGrid
 import com.github.damontecres.wholphin.ui.detail.GridItemDetails
 import com.github.damontecres.wholphin.ui.main.HomePageHeader
 import com.github.damontecres.wholphin.ui.playback.scale
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import com.github.damontecres.wholphin.ui.util.ScrollToTopBringIntoViewSpec
 import org.jellyfin.sdk.model.api.BaseItemKind
 import org.jellyfin.sdk.model.api.CollectionType
@@ -73,6 +74,7 @@ fun CollectionFolderGrid(
         ) {
             val defaultBringIntoViewSpec = LocalBringIntoViewSpec.current
             val density = LocalDensity.current
+            val spacingDp = LocalInterfaceCustomization.current.spacingDp
             AnimatedVisibility(viewOptions.showDetails) {
                 HomePageHeader(
                     item = focusedItem,
@@ -110,10 +112,10 @@ fun CollectionFolderGrid(
                     )
                 },
                 columns = viewOptions.columns,
-                spacing = viewOptions.spacing.dp,
+                spacing = spacingDp.dp,
                 bringIntoViewSpec =
-                    remember(viewOptions) {
-                        val spacingPx = with(density) { viewOptions.spacing.dp.toPx() }
+                    remember(viewOptions.showDetails, spacingDp) {
+                        val spacingPx = with(density) { spacingDp.dp.toPx() }
                         if (viewOptions.showDetails) {
                             ScrollToTopBringIntoViewSpec(spacingPx)
                         } else {
@@ -132,7 +134,6 @@ data class PositionItem(
 
 data class CollectionFolderGridParameters(
     val columns: Int = 6,
-    val spacing: Dp = 16.dp,
     val cardContent: @Composable (GridItemDetails<BaseItem>) -> Unit = { (item, index, onClick, onLongClick, widthPx, mod) ->
         GridCard(
             item = item,
@@ -148,7 +149,6 @@ data class CollectionFolderGridParameters(
         val POSTER =
             CollectionFolderGridParameters(
                 columns = 6,
-                spacing = 16.dp,
                 cardContent = { (item, index, onClick, onLongClick, widthPx, mod) ->
                     GridCard(
                         item = item,
@@ -164,7 +164,6 @@ data class CollectionFolderGridParameters(
         val WIDE =
             CollectionFolderGridParameters(
                 columns = 4,
-                spacing = 24.dp,
                 cardContent = { (item, index, onClick, onLongClick, widthPx, mod) ->
                     GridCard(
                         item = item,
@@ -180,7 +179,6 @@ data class CollectionFolderGridParameters(
         val SQUARE =
             CollectionFolderGridParameters(
                 columns = 6,
-                spacing = 16.dp,
                 cardContent = { (item, index, onClick, onLongClick, widthPx, mod) ->
                     GridCard(
                         item = item,

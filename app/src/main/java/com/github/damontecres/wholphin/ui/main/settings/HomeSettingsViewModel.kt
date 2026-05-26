@@ -629,30 +629,6 @@ class HomeSettingsViewModel
             homeSettingsService.currentSettings.update { HomePageResolvedSettings(state.value.rows) }
         }
 
-        fun resizeCards(relative: Int) {
-            viewModelScope.launchIO {
-                updateState {
-                    val newRows =
-                        it.rows.toMutableList().map { row ->
-                            val vo = row.config.viewOptions
-                            val newVo = vo.copy(heightDp = vo.heightDp + (4 * relative))
-                            row.copy(config = row.config.updateViewOptions(newVo))
-                        }
-                    it.copy(
-                        rows = newRows,
-                        rowData =
-                            it.rowData.toMutableList().mapIndexed { index, row ->
-                                if (row is HomeRowLoadingState.Success) {
-                                    row.copy(viewOptions = newRows[index].config.viewOptions)
-                                } else {
-                                    row
-                                }
-                            },
-                    )
-                }
-            }
-        }
-
         fun resetToDefault() =
             viewModelScope.launchIO {
                 val userId = serverRepository.currentUser?.id ?: return@launchIO

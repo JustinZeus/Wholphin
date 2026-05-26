@@ -58,6 +58,7 @@ import com.github.damontecres.wholphin.ui.nav.Destination
 import com.github.damontecres.wholphin.ui.playback.scale
 import com.github.damontecres.wholphin.ui.rememberInt
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import com.github.damontecres.wholphin.ui.util.StringProvider
 import com.github.damontecres.wholphin.ui.util.StringStringProvider
 import com.github.damontecres.wholphin.util.ApiRequestPager
@@ -368,7 +369,7 @@ fun HomeRowGrid(
                                 )
                             },
                             columns = if (viewOptions.aspectRatio.ratio > 1f) 4 else 6,
-                            spacing = viewOptions.spacing.dp,
+                            spacing = LocalInterfaceCustomization.current.spacingDp.dp,
                             bringIntoViewSpec = LocalBringIntoViewSpec.current,
                         )
                     }

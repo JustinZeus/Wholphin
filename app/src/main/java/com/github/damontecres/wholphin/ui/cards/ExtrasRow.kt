@@ -4,10 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.github.damontecres.wholphin.R
 import com.github.damontecres.wholphin.data.ExtrasItem
 import com.github.damontecres.wholphin.ui.AspectRatios
-import com.github.damontecres.wholphin.ui.Cards
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 
 @Composable
 fun ExtrasRow(
@@ -30,7 +31,7 @@ fun ExtrasRow(
                 onLongClick = onLongClick,
                 modifier = mod,
                 showImageOverlay = true,
-                imageHeight = Cards.heightEpisode,
+                imageHeight = LocalInterfaceCustomization.current.episodeCardHeightDp.dp,
                 imageWidth = Dp.Unspecified,
                 imageUrl = item?.imageUrl,
                 isFavorite = false,
