@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -19,7 +16,6 @@ import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.tv.material3.Icon
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.github.damontecres.wholphin.R
@@ -33,7 +29,6 @@ import com.github.damontecres.wholphin.ui.tryRequestFocus
 fun HomeSettingsGlobal(
     preferences: AppPreferences,
     onPreferenceChange: (AppPreferences) -> Unit,
-    onClickResize: (Int) -> Unit,
     onClickSave: () -> Unit,
     onClickLoad: () -> Unit,
     onClickLoadWeb: () -> Unit,
@@ -103,35 +98,6 @@ fun HomeSettingsGlobal(
                         onPreferenceChange.invoke(newPrefs)
                     },
                     onNavigate = {},
-                    modifier = Modifier,
-                )
-            }
-            item { HorizontalDivider() }
-            item {
-                HomeSettingsListItem(
-                    selected = false,
-                    headlineText = stringResource(R.string.increase_all_cards_size),
-                    leadingContent = {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowUp,
-                            contentDescription = null,
-                        )
-                    },
-                    onClick = { onClickResize.invoke(1) },
-                    modifier = Modifier,
-                )
-            }
-            item {
-                HomeSettingsListItem(
-                    selected = false,
-                    headlineText = stringResource(R.string.decrease_all_cards_size),
-                    leadingContent = {
-                        Icon(
-                            imageVector = Icons.Default.KeyboardArrowDown,
-                            contentDescription = null,
-                        )
-                    },
-                    onClick = { onClickResize.invoke(-1) },
                     modifier = Modifier,
                 )
             }

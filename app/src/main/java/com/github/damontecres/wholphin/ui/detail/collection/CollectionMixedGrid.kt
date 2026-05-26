@@ -18,6 +18,7 @@ import com.github.damontecres.wholphin.ui.cards.GridCard
 import com.github.damontecres.wholphin.ui.data.RowColumn
 import com.github.damontecres.wholphin.ui.detail.CardGrid
 import com.github.damontecres.wholphin.ui.playback.scale
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import com.github.damontecres.wholphin.ui.util.ScrollToTopBringIntoViewSpec
 import org.jellyfin.sdk.model.api.ItemSortBy
 
@@ -44,6 +45,7 @@ fun CollectionMixedGrid(
             val density = LocalDensity.current
 
             val cardViewOptions = state.viewOptions.cardViewOptions
+            val spacingDp = LocalInterfaceCustomization.current.spacingDp
             CardGrid(
                 pager = state.items,
                 onClickItem = { index: Int, item: BaseItem -> onClickItem.invoke(RowColumn(0, index), item) },
@@ -74,10 +76,10 @@ fun CollectionMixedGrid(
                     )
                 },
                 columns = cardViewOptions.columns,
-                spacing = cardViewOptions.spacing.dp,
+                spacing = spacingDp.dp,
                 bringIntoViewSpec =
-                    remember(cardViewOptions) {
-                        val spacingPx = with(density) { cardViewOptions.spacing.dp.toPx() }
+                    remember(cardViewOptions.showDetails, spacingDp) {
+                        val spacingPx = with(density) { spacingDp.dp.toPx() }
                         if (cardViewOptions.showDetails) {
                             ScrollToTopBringIntoViewSpec(spacingPx)
                         } else {

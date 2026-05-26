@@ -52,7 +52,7 @@ import com.github.damontecres.wholphin.data.model.HomeRowConfig
 import com.github.damontecres.wholphin.data.model.HomeRowViewOptions
 import com.github.damontecres.wholphin.data.model.QuickDetailsData
 import com.github.damontecres.wholphin.preferences.UserPreferences
-import com.github.damontecres.wholphin.ui.Cards
+import com.github.damontecres.wholphin.ui.BASE_SPACING_DP
 import com.github.damontecres.wholphin.ui.cards.BannerCard
 import com.github.damontecres.wholphin.ui.cards.BannerCardWithTitle
 import com.github.damontecres.wholphin.ui.cards.GenreCard
@@ -84,7 +84,9 @@ import com.github.damontecres.wholphin.ui.playback.playable
 import com.github.damontecres.wholphin.ui.playback.scale
 import com.github.damontecres.wholphin.ui.rememberPosition
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import com.github.damontecres.wholphin.ui.util.ScrollToTopBringIntoViewSpec
+import com.github.damontecres.wholphin.ui.util.resolvedCardHeight
 import com.github.damontecres.wholphin.util.HomeRowLoadingState
 import com.github.damontecres.wholphin.util.LoadingState
 import kotlinx.coroutines.delay
@@ -364,7 +366,7 @@ fun HomePageContent(
                     verticalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding =
                         PaddingValues(
-                            bottom = Cards.height2x3,
+                            bottom = LocalInterfaceCustomization.current.cardHeightDp.dp,
                         ),
                     modifier =
                         Modifier
@@ -427,7 +429,8 @@ fun HomePageContent(
                                                     .focusGroup()
                                                     .focusRequester(rowFocusRequesters[rowIndex])
                                                     .animateItem(),
-                                            horizontalPadding = viewOptions.spacing.dp,
+                                            horizontalPadding = BASE_SPACING_DP.dp,
+                                            cardSpacing = LocalInterfaceCustomization.current.spacingDp.dp,
                                             cardContent = { index, item, cardModifier, onClick, onLongClick ->
                                                 val onFocus =
                                                     remember(rowIndex, index) {
@@ -623,7 +626,7 @@ fun HomePageCardContent(
                 imageUrl = item.imageUrlOverride,
                 onClick = onClick,
                 onLongClick = onLongClick,
-                modifier = modifier.height(viewOptions.heightDp.dp),
+                modifier = modifier.height(viewOptions.resolvedCardHeight()),
             )
         }
 
@@ -634,7 +637,7 @@ fun HomePageCardContent(
                 imageUrl = item.imageUrlOverride,
                 onClick = onClick,
                 onLongClick = onLongClick,
-                modifier = modifier.height(viewOptions.heightDp.dp),
+                modifier = modifier.height(viewOptions.resolvedCardHeight()),
             )
         }
 
@@ -680,7 +683,7 @@ fun HomePageCardContent(
                     onClick = onClick,
                     onLongClick = onLongClick,
                     modifier = modifier,
-                    cardHeight = viewOptions.heightDp.dp,
+                    cardHeight = viewOptions.resolvedCardHeight(),
                     useSeriesForPrimary = viewOptions.useSeries,
                 )
             } else {
@@ -700,7 +703,7 @@ fun HomePageCardContent(
                     onLongClick = onLongClick,
                     modifier = modifier,
                     interactionSource = null,
-                    cardHeight = viewOptions.heightDp.dp,
+                    cardHeight = viewOptions.resolvedCardHeight(),
                     useSeriesForPrimary = viewOptions.useSeries,
                 )
             }
@@ -729,7 +732,7 @@ fun HomePageViewMoreCard(
         onLongClick = onLongClick,
         modifier = modifier,
         aspectRatio = aspectRatio,
-        size = DpSize(height = viewOptions.heightDp.dp, width = Dp.Unspecified),
+        size = DpSize(height = viewOptions.resolvedCardHeight(), width = Dp.Unspecified),
         showTitle = viewOptions.showTitles,
     )
 }

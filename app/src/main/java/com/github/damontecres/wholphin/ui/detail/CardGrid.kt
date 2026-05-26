@@ -66,6 +66,7 @@ import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.github.damontecres.wholphin.R
 import com.github.damontecres.wholphin.ui.AppColors
+import com.github.damontecres.wholphin.ui.BASE_SPACING_DP
 import com.github.damontecres.wholphin.ui.FontAwesome
 import com.github.damontecres.wholphin.ui.ifElse
 import com.github.damontecres.wholphin.ui.playback.isBackwardButton
@@ -320,7 +321,7 @@ fun <T : CardGridItem> CardGrid(
                         horizontalArrangement = Arrangement.spacedBy(spacing),
                         verticalArrangement = Arrangement.spacedBy(spacing),
                         state = gridState,
-                        contentPadding = PaddingValues(vertical = 16.dp),
+                        contentPadding = PaddingValues(horizontal = BASE_SPACING_DP.dp, vertical = 16.dp),
                         modifier =
                             Modifier
                                 .fillMaxSize()
@@ -333,10 +334,11 @@ fun <T : CardGridItem> CardGrid(
                                         }
                                     }
                                 }.onLayoutRectChanged(0, 0) {
-                                    val width = it.width
                                     val spacingPx = with(density) { spacing.toPx() }
+                                    val horizontalPaddingPx = with(density) { BASE_SPACING_DP.dp.toPx() } * 2
+                                    val usableWidth = it.width - horizontalPaddingPx
                                     val cardWidth =
-                                        ceil((width - (spacingPx * (columns - 1))) / columns)
+                                        ceil((usableWidth - (spacingPx * (columns - 1))) / columns)
                                     cardWidthPx = cardWidth.toInt()
 //                                    Timber.v("cardWidthPx=%s", cardWidthPx)
                                 },

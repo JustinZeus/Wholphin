@@ -146,16 +146,6 @@ data class ViewOptions(
                 getter = { it.columns.toLong() },
                 setter = { prefs, value -> prefs.copy(columns = value.toInt()) },
             )
-        val ViewOptionsSpacing =
-            AppSliderPreference<ViewOptions>(
-                title = R.string.spacing,
-                defaultValue = 16,
-                min = 0,
-                max = 32,
-                interval = 2,
-                getter = { it.spacing.toLong() },
-                setter = { prefs, value -> prefs.copy(spacing = value.toInt()) },
-            )
 
         val ViewOptionsContentScale =
             AppChoicePreference<ViewOptions, PrefContentScale>(
@@ -252,7 +242,6 @@ data class ViewOptions(
                 ViewOptionsBackdrop,
                 ViewOptionsShowTitles,
                 ViewOptionsColumns,
-                ViewOptionsSpacing,
                 ViewOptionsContentScale,
                 ViewOptionsReset,
             )
@@ -262,7 +251,6 @@ data class ViewOptions(
                 ViewOptionsTypePref,
                 ViewOptionsDetailHeader,
                 ViewOptionsBackdrop,
-                ViewOptionsSpacing,
                 ViewOptionsReset,
             )
     }

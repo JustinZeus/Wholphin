@@ -37,7 +37,6 @@ import com.github.damontecres.wholphin.data.model.aspectRatioFloat
 import com.github.damontecres.wholphin.preferences.UserPreferences
 import com.github.damontecres.wholphin.services.TrailerService
 import com.github.damontecres.wholphin.ui.AspectRatios
-import com.github.damontecres.wholphin.ui.Cards
 import com.github.damontecres.wholphin.ui.RequestOrRestoreFocus
 import com.github.damontecres.wholphin.ui.cards.ChapterRow
 import com.github.damontecres.wholphin.ui.cards.ExtrasRow
@@ -62,6 +61,7 @@ import com.github.damontecres.wholphin.ui.discover.DiscoverRowData
 import com.github.damontecres.wholphin.ui.letNotEmpty
 import com.github.damontecres.wholphin.ui.nav.Destination
 import com.github.damontecres.wholphin.ui.rememberInt
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 import com.github.damontecres.wholphin.ui.util.ResStringProvider
 import com.github.damontecres.wholphin.util.DataLoadingState
 import com.github.damontecres.wholphin.util.DiscoverRequestType
@@ -431,12 +431,14 @@ fun MovieDetailsContent(
             }
             state.similar.letNotEmpty { similar ->
                 item {
+                    val movieCardHeight = LocalInterfaceCustomization.current.cardHeightDp.dp
+                    val episodeCardHeight = LocalInterfaceCustomization.current.episodeCardHeightDp.dp
                     val imageHeight =
-                        remember(movie.type) {
+                        remember(movie.type, movieCardHeight, episodeCardHeight) {
                             if (movie.type == BaseItemKind.MOVIE) {
-                                Cards.height2x3
+                                movieCardHeight
                             } else {
-                                Cards.heightEpisode
+                                episodeCardHeight
                             }
                         }
                     ItemRow(

@@ -223,7 +223,7 @@ const val SUPPORTED_HOME_PAGE_SETTINGS_VERSION = 1
  */
 @Serializable
 data class HomeRowViewOptions(
-    val heightDp: Int = Cards.HEIGHT_2X3_DP,
+    val heightDp: Int = 0,
     val spacing: Int = 16,
     val contentScale: PrefContentScale = PrefContentScale.FILL,
     val aspectRatio: AspectRatio = AspectRatio.TALL,
