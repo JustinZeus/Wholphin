@@ -8,11 +8,23 @@ import com.github.damontecres.wholphin.preferences.AppSliderPreference
 import com.github.damontecres.wholphin.ui.Cards
 
 @Composable
-internal fun HomeRowViewOptions.resolvedCardHeight(): Dp {
-    val global = LocalInterfaceCustomization.current.cardHeightDp
-    val isOverride = heightDp > 0 && heightDp != Cards.HEIGHT_2X3_DP
-    val base = if (isOverride) heightDp else global
-    return (base * cardSizeMultiplier / 100).dp
+internal fun HomeRowViewOptions.resolvedCardHeight(): Dp =
+    resolveCardHeight(
+        heightDp = heightDp,
+        cardSizeMultiplier = cardSizeMultiplier,
+        globalCardHeightDp = LocalInterfaceCustomization.current.cardHeightDp,
+        baseCardHeightDp = Cards.HEIGHT_2X3_DP,
+    ).dp
+
+internal fun resolveCardHeight(
+    heightDp: Int,
+    cardSizeMultiplier: Int,
+    globalCardHeightDp: Int,
+    baseCardHeightDp: Int,
+): Int {
+    val isOverride = heightDp > 0 && heightDp != baseCardHeightDp
+    val base = if (isOverride) heightDp else globalCardHeightDp
+    return base * cardSizeMultiplier / 100
 }
 
 internal fun Int.withinBoundsOrDefault(preference: AppSliderPreference<*>): Int {

@@ -195,7 +195,14 @@ class HomeSettingsService
                 rowsElement
                     ?.mapNotNull { row ->
                         try {
-                            jsonParser.decodeFromJsonElement<HomeRowConfig>(row)
+                            val config = jsonParser.decodeFromJsonElement<HomeRowConfig>(row)
+                            val legacySpacing =
+                                row.jsonObject["viewOptions"]
+                                    ?.jsonObject
+                                    ?.get("spacing")
+                                    ?.jsonPrimitive
+                                    ?.intOrNull
+                            migrateLegacyRowSpacing(config, legacySpacing)
                         } catch (ex: Exception) {
                             Timber.w(ex, "Unknown row %s", row)
                             // TODO maybe use placeholder instead of null?
@@ -1171,6 +1178,25 @@ class UnsupportedHomeSettingsVersionException(
     val unsupportedVersion: Int?,
     val maxSupportedVersion: Int = SUPPORTED_HOME_PAGE_SETTINGS_VERSION,
 ) : Exception("Unsupported version $unsupportedVersion, max supported is $maxSupportedVersion")
+
+private const val LEGACY_DEFAULT_ROW_SPACING_DP = 16
+private const val MULTIPLIER_MIN = 50
+private const val MULTIPLIER_MAX = 150
+private const val MULTIPLIER_STEP = 5
+
+internal fun migrateLegacyRowSpacing(
+    config: HomeRowConfig,
+    legacySpacingDp: Int?,
+): HomeRowConfig {
+    if (legacySpacingDp == null || legacySpacingDp == LEGACY_DEFAULT_ROW_SPACING_DP) return config
+    if (config.viewOptions.spacingMultiplier != 100) return config
+    val raw =
+        (legacySpacingDp * 100 / LEGACY_DEFAULT_ROW_SPACING_DP)
+            .coerceIn(MULTIPLIER_MIN, MULTIPLIER_MAX)
+    val snapped = (raw / MULTIPLIER_STEP) * MULTIPLIER_STEP
+    if (snapped == 100) return config
+    return config.updateViewOptions(config.viewOptions.copy(spacingMultiplier = snapped))
+}
 
 fun getRecentlyAddedTitle(library: Library?): StringProvider =
     if (library?.isRecordingFolder == true) {
