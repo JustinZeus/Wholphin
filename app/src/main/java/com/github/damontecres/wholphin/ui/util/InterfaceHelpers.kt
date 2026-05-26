@@ -10,18 +10,13 @@ import com.github.damontecres.wholphin.ui.AspectRatio
 import com.github.damontecres.wholphin.ui.Cards
 
 @Composable
-internal fun HomeRowViewOptions.resolvedCardHeight(): Dp {
-    val custom = LocalInterfaceCustomization.current
-    val naturalBase = naturalCardBaseDp(aspectRatio)
-    val globalForThisRow =
-        if (naturalBase == Cards.HEIGHT_EPISODE) custom.episodeCardHeightDp else custom.cardHeightDp
-    return resolveCardHeight(
+internal fun HomeRowViewOptions.resolvedCardHeight(): Dp =
+    resolveCardHeight(
         heightDp = heightDp,
         cardSizeMultiplier = cardSizeMultiplier,
-        globalCardHeightDp = globalForThisRow,
-        baseCardHeightDp = naturalBase,
+        globalCardSizePercent = LocalInterfaceCustomization.current.cardSizePercent,
+        naturalCardHeightDp = naturalCardBaseDp(aspectRatio),
     ).dp
-}
 
 // SQUARE / FOUR_THREE rows piggyback on the poster (TALL) global; they either store an
 // explicit override (Music preset rows at 100dp, etc.) or compose well enough at poster size.
@@ -31,15 +26,18 @@ internal fun naturalCardBaseDp(aspectRatio: AspectRatio): Int =
         AspectRatio.TALL, AspectRatio.SQUARE, AspectRatio.FOUR_THREE -> Cards.HEIGHT_2X3_DP
     }
 
+// The global Card slider, the per-row multiplier, and any preset-set absolute heightDp
+// all stack. Preset 148dp + global 150% + per-row 100% = 222dp. The base is the row's
+// preset if present, otherwise the natural height for its aspect.
 internal fun resolveCardHeight(
     heightDp: Int,
     cardSizeMultiplier: Int,
-    globalCardHeightDp: Int,
-    baseCardHeightDp: Int,
+    globalCardSizePercent: Int,
+    naturalCardHeightDp: Int,
 ): Int {
-    val isOverride = heightDp > 0 && heightDp != baseCardHeightDp
-    val base = if (isOverride) heightDp else globalCardHeightDp
-    return base * cardSizeMultiplier / 100
+    val isOverride = heightDp > 0 && heightDp != naturalCardHeightDp
+    val base = if (isOverride) heightDp else naturalCardHeightDp
+    return base * globalCardSizePercent / 100 * cardSizeMultiplier / 100
 }
 
 // Scales density (and therefore both dp layouts and sp text) linearly by uiScalePercent.
