@@ -72,7 +72,22 @@ fun EpisodeCard(
     val width = imageHeight * aspectRatio
     val height = imageWidth * (1f / aspectRatio)
     val density = LocalDensity.current
-    val imageWidthPx = remember(imageWidth) { with(density) { imageWidth.roundToPx() } }
+    val fillWidthPx =
+        remember(imageWidth, density) {
+            if (imageWidth != Dp.Unspecified) {
+                with(density) { imageWidth.roundToPx() }
+            } else {
+                null
+            }
+        }
+    val fillHeightPx =
+        remember(imageHeight, density) {
+            if (imageHeight != Dp.Unspecified) {
+                with(density) { imageHeight.roundToPx() }
+            } else {
+                null
+            }
+        }
     Column(
         verticalArrangement = Arrangement.spacedBy(spaceBetween),
         modifier = modifier.size(width, height),
@@ -105,7 +120,8 @@ fun EpisodeCard(
                     watchedPercent = dto?.userData?.playedPercentage,
                     numberOfVersions = dto?.mediaSourceCount ?: 0,
                     useFallbackText = false,
-                    fillWidth = imageWidthPx,
+                    fillWidth = fillWidthPx,
+                    fillHeight = fillHeightPx,
                     modifier =
                         Modifier
                             .fillMaxSize(),
