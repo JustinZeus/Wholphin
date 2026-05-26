@@ -141,7 +141,7 @@ fun ItemGrid(
                     showJumpButtons = false,
                     showLetterButtons = false,
                     initialPosition = destination.initialPosition,
-                    spacing = LocalInterfaceCustomization.current.spacingDp.dp,
+                    spacing = (destination.viewOptions.spacing * LocalInterfaceCustomization.current.spacingPercent / 100).dp,
                     cardContent = @Composable { (item, index, onClick, onLongClick, widthPx, mod) ->
                         GridCard(
                             item = item,

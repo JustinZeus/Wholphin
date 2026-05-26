@@ -45,7 +45,7 @@ fun CollectionMixedGrid(
             val density = LocalDensity.current
 
             val cardViewOptions = state.viewOptions.cardViewOptions
-            val spacingDp = LocalInterfaceCustomization.current.spacingDp
+            val spacingDp = cardViewOptions.spacing * LocalInterfaceCustomization.current.spacingPercent / 100
             CardGrid(
                 pager = state.items,
                 onClickItem = { index: Int, item: BaseItem -> onClickItem.invoke(RowColumn(0, index), item) },

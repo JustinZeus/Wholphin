@@ -28,6 +28,7 @@ import com.github.damontecres.wholphin.ui.components.HiddenFocusBox
 import com.github.damontecres.wholphin.ui.ifElse
 import com.github.damontecres.wholphin.ui.playback.ControllerViewState
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
 
 @Composable
 fun QueueRowOverlay(
@@ -85,7 +86,7 @@ fun QueueRowOverlay(
                         controllerViewState.hideControls()
                     },
                     onLongClick = {},
-                    imageHeight = 140.dp,
+                    imageHeight = LocalInterfaceCustomization.current.episodeCardHeightDp.dp,
                     interactionSource = interactionSource,
                     modifier =
                         Modifier.ifElse(

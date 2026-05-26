@@ -1184,6 +1184,10 @@ private const val MULTIPLIER_MIN = 50
 private const val MULTIPLIER_MAX = 150
 private const val MULTIPLIER_STEP = 5
 
+// Clamped to MULTIPLIER_MIN..MULTIPLIER_MAX (50..150) because that's the
+// per-row Spacing multiplier's slider range - intentionally narrower than
+// the global Spacing slider's 25..175. A legacy spacing >= 24dp flattens
+// to 150% rather than overshooting the per-row UI's bounds.
 internal fun migrateLegacyRowSpacing(
     config: HomeRowConfig,
     legacySpacingDp: Int?,

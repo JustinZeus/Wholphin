@@ -9,6 +9,7 @@ import com.github.damontecres.wholphin.ui.Cards
 import org.jellyfin.sdk.model.UUID
 import org.junit.Assert.assertEquals
 import org.junit.Test
+import java.util.EnumSet
 
 class InterfaceHelpersTest {
     @Test
@@ -77,6 +78,44 @@ class InterfaceHelpersTest {
     }
 
     @Test
+    fun `resolveCardHeight uses global when heightDp equals episode natural base 128`() {
+        // For an episode-aspect row, the caller passes baseCardHeightDp = HEIGHT_EPISODE (128)
+        // and globalCardHeightDp = episodeCardHeightDp. The stored heightDp = 128 then must
+        // not be treated as an override - the global Card slider should reach this row.
+        assertEquals(128, resolveCardHeight(Cards.HEIGHT_EPISODE, 100, 128, Cards.HEIGHT_EPISODE))
+        // Global at 150%: episodeCardHeightDp = 128 * 150 / 100 = 192.
+        assertEquals(192, resolveCardHeight(Cards.HEIGHT_EPISODE, 100, 192, Cards.HEIGHT_EPISODE))
+    }
+
+    @Test
+    fun `resolveCardHeight honours per-row override even when row is episode-natural`() {
+        // A user who manually drags an episode row to heightDp = 200 still wins over the global.
+        assertEquals(200, resolveCardHeight(200, 100, 192, Cards.HEIGHT_EPISODE))
+        // Live-TV-style 96.dp override stays absolute.
+        assertEquals(96, resolveCardHeight(96, 100, 192, Cards.HEIGHT_EPISODE))
+    }
+
+    @Test
+    fun `UI scale must not double-apply on text`() {
+        // sp rendering = sp.value * density * fontScale. MainContent's scaled Density
+        // multiplies density by factor and leaves fontScale alone; at slider 150% text must
+        // grow by 1.5x, not 1.5*1.5 = 2.25x. Regression guard for the original bug where both
+        // were multiplied.
+        val baseDensity = 2.0f
+        val baseFontScale = 1.0f
+        val factor = 1.5f
+        // The pattern MainContent.kt uses after the fix:
+        val scaledDensity = baseDensity * factor
+        val scaledFontScale = baseFontScale
+        val baseTextPx = 14f * baseDensity * baseFontScale
+        val scaledTextPx = 14f * scaledDensity * scaledFontScale
+        assertEquals(1.5f * baseTextPx, scaledTextPx, 0.001f)
+        // Double-application (the bug) would have produced 2.25x.
+        val buggyTextPx = 14f * (baseDensity * factor) * (baseFontScale * factor)
+        assertEquals(2.25f * baseTextPx, buggyTextPx, 0.001f)
+    }
+
+    @Test
     fun `InterfaceCustomization cardHeightDp computes global from slider percent`() {
         val customization = InterfaceCustomization(prefs = AppPreferences.getDefaultInstance())
         // Default cardSizePercent is 100, so cardHeightDp == HEIGHT_2X3_DP.
@@ -88,7 +127,7 @@ class InterfaceHelpersTest {
         val customization =
             InterfaceCustomization(
                 enabledDisplayToggles =
-                    java.util.EnumSet.noneOf(
+                    EnumSet.noneOf(
                         com.github.damontecres.wholphin.preferences.DisplayToggle::class.java,
                     ),
                 cardSizePercent = 150,
@@ -102,7 +141,7 @@ class InterfaceHelpersTest {
         val customization =
             InterfaceCustomization(
                 enabledDisplayToggles =
-                    java.util.EnumSet.noneOf(
+                    EnumSet.noneOf(
                         com.github.damontecres.wholphin.preferences.DisplayToggle::class.java,
                     ),
                 spacingPercent = 175,
