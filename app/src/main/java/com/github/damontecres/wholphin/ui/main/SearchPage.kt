@@ -714,8 +714,8 @@ fun SearchPage(
                                         onClick.invoke()
                                     },
                                     onLongClick = onLongClick,
-                                    imageHeight = 140.dp,
-                                    modifier = mod.padding(horizontal = 8.dp),
+                                    imageHeight = LocalInterfaceCustomization.current.episodeCardHeightDp.dp,
+                                    modifier = mod,
                                 )
                             },
                         )
