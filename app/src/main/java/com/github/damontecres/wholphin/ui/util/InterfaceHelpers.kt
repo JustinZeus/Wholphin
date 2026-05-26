@@ -11,7 +11,8 @@ import com.github.damontecres.wholphin.ui.Cards
 internal fun HomeRowViewOptions.resolvedCardHeight(): Dp {
     val global = LocalInterfaceCustomization.current.cardHeightDp
     val isOverride = heightDp > 0 && heightDp != Cards.HEIGHT_2X3_DP
-    return (if (isOverride) heightDp else global).dp
+    val base = if (isOverride) heightDp else global
+    return (base * cardSizeMultiplier / 100).dp
 }
 
 internal fun Int.withinBoundsOrDefault(preference: AppSliderPreference<*>): Int {
