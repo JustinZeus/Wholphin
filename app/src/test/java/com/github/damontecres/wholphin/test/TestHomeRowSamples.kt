@@ -27,7 +27,8 @@ class TestHomeRowSamples {
                     viewOptions =
                         HomeRowViewOptions(
                             heightDp = 100,
-                            spacing = 8,
+                            cardSizeMultiplier = 110,
+                            spacingMultiplier = 50,
                             contentScale = PrefContentScale.CROP,
                             aspectRatio = AspectRatio.FOUR_THREE,
                             imageType = ViewOptionImageType.THUMB,
