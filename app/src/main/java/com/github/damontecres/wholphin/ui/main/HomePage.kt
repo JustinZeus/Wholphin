@@ -430,7 +430,11 @@ fun HomePageContent(
                                                     .focusRequester(rowFocusRequesters[rowIndex])
                                                     .animateItem(),
                                             horizontalPadding = BASE_SPACING_DP.dp,
-                                            cardSpacing = LocalInterfaceCustomization.current.spacingDp.dp,
+                                            cardSpacing =
+                                                (
+                                                    LocalInterfaceCustomization.current.spacingDp * viewOptions.spacingMultiplier /
+                                                        100
+                                                ).dp,
                                             cardContent = { index, item, cardModifier, onClick, onLongClick ->
                                                 val onFocus =
                                                     remember(rowIndex, index) {

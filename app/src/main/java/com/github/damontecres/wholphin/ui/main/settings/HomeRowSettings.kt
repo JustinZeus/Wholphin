@@ -74,7 +74,6 @@ fun HomeRowSettings(
                                     onViewOptionsChange.invoke(
                                         viewOptions.copy(
                                             heightDp = Cards.HEIGHT_EPISODE,
-                                            spacing = 20,
                                             imageType = ViewOptionImageType.THUMB,
                                             aspectRatio = AspectRatio.WIDE,
                                             contentScale = PrefContentScale.FIT,
@@ -100,25 +99,28 @@ fun HomeRowSettings(
 }
 
 internal object Options {
-    val ViewOptionsCardHeight =
+    val ViewOptionsCardSize =
         AppSliderPreference<HomeRowViewOptions>(
-            title = R.string.height,
-            defaultValue = Cards.HEIGHT_2X3_DP.toLong(),
-            min = 64L,
-            max = Cards.HEIGHT_2X3_DP + 64L,
-            interval = 4,
-            getter = { it.heightDp.toLong() },
-            setter = { prefs, value -> prefs.copy(heightDp = value.toInt()) },
+            title = R.string.card_size,
+            defaultValue = 100,
+            min = 50,
+            max = 150,
+            interval = 5,
+            getter = { it.cardSizeMultiplier.toLong() },
+            setter = { vo, value -> vo.copy(cardSizeMultiplier = value.toInt()) },
+            summarizer = { it?.let { "$it%" } },
         )
+
     val ViewOptionsSpacing =
         AppSliderPreference<HomeRowViewOptions>(
             title = R.string.spacing,
-            defaultValue = 16,
-            min = 0,
-            max = 32,
-            interval = 2,
-            getter = { it.spacing.toLong() },
-            setter = { prefs, value -> prefs.copy(spacing = value.toInt()) },
+            defaultValue = 100,
+            min = 50,
+            max = 150,
+            interval = 5,
+            getter = { it.spacingMultiplier.toLong() },
+            setter = { vo, value -> vo.copy(spacingMultiplier = value.toInt()) },
+            summarizer = { it?.let { "$it%" } },
         )
 
     val ViewOptionsContentScale =
@@ -238,7 +240,7 @@ internal object Options {
                 title = R.string.general,
                 preferences =
                     listOf(
-                        ViewOptionsCardHeight,
+                        ViewOptionsCardSize,
                         ViewOptionsSpacing,
                         ViewOptionsShowTitles,
                         ViewOptionsImageType,
@@ -264,7 +266,7 @@ internal object Options {
                 title = R.string.general,
                 preferences =
                     listOf(
-                        ViewOptionsCardHeight,
+                        ViewOptionsCardSize,
                         ViewOptionsSpacing,
                         ViewOptionsShowTitles,
                         ViewOptionsImageType,
@@ -298,8 +300,6 @@ internal object Options {
                 title = R.string.general,
                 preferences =
                     listOf(
-                        ViewOptionsCardHeight,
-                        ViewOptionsSpacing,
                         ViewOptionsReset,
                     ),
             ),

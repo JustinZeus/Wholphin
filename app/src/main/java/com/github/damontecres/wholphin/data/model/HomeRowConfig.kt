@@ -217,14 +217,17 @@ data class HomePageSettings(
 const val SUPPORTED_HOME_PAGE_SETTINGS_VERSION = 1
 
 /**
- * View options for displaying a row
+ * View options for displaying a row.
  *
- * Allows for changing things like height or aspect ratio
+ * [heightDp] of `0` means "use the global card size"; a non-zero value is treated as a per-row
+ * absolute override (set by Display Presets). [cardSizeMultiplier] and [spacingMultiplier] are
+ * percents (default 100) applied on top of the global Card size / Spacing sliders for this row.
  */
 @Serializable
 data class HomeRowViewOptions(
     val heightDp: Int = 0,
-    val spacing: Int = 16,
+    val cardSizeMultiplier: Int = 100,
+    val spacingMultiplier: Int = 100,
     val contentScale: PrefContentScale = PrefContentScale.FILL,
     val aspectRatio: AspectRatio = AspectRatio.TALL,
     val imageType: ViewOptionImageType = ViewOptionImageType.PRIMARY,
