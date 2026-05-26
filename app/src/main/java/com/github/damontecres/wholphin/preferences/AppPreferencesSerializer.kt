@@ -100,6 +100,9 @@ class AppPreferencesSerializer
                                 showLogos = AppPreference.ShowLogos.defaultValue
                                 clearDisplayToggles()
                                 addAllDisplayToggles(AppPreference.DisplayTogglesPref.defaultValue)
+                                uiScalePercent = AppPreference.UiScale.defaultValue.toInt()
+                                cardSizePercent = AppPreference.CardSize.defaultValue.toInt()
+                                spacingPercent = AppPreference.Spacing.defaultValue.toInt()
 
                                 searchPreferences =
                                     SearchPreferences

@@ -350,5 +350,15 @@ class AppUpgradeHandler
                     }
                 }
             }
+
+            if (previous.isEqualOrBefore(Version.fromString("0.6.4-31-g0"))) {
+                appPreferences.updateData {
+                    it.updateInterfacePreferences {
+                        uiScalePercent = AppPreference.UiScale.defaultValue.toInt()
+                        cardSizePercent = AppPreference.CardSize.defaultValue.toInt()
+                        spacingPercent = AppPreference.Spacing.defaultValue.toInt()
+                    }
+                }
+            }
         }
     }

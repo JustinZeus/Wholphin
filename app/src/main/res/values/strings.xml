@@ -356,6 +356,7 @@
     <string name="subtitle_style">Subtitle style</string>
     <string name="background_color">Background color</string>
     <string name="reset">Reset</string>
+    <string name="reset_to_defaults">Reset to defaults</string>
     <string name="bold_font">Bold font</string>
 
     <string name="player_backend">Playback Backend</string>
@@ -396,6 +397,10 @@
     <string name="view_options">View options</string>
     <string name="columns">Columns</string>
     <string name="spacing">Spacing</string>
+    <string name="card_size">Card size</string>
+    <string name="display_size">Display size</string>
+    <string name="display_size_summary">Scale the app UI, card size, and spacing</string>
+    <string name="ui_scale">UI scale</string>
     <string name="aspect_ratio">Aspect Ratio</string>
     <string name="show_details">Show details</string>
     <string name="image_type">Image type</string>
@@ -525,7 +530,6 @@
     <string name="add_row">Add row</string>
     <string name="genres_in">Genres in %1$s</string>
     <string name="recently_released_in">Recently released in %1$s</string>
-    <string name="height">Height</string>
     <string name="apply_all_rows">Apply to all rows</string>
     <string name="customize_home">Customize home page</string>
     <string name="home_rows">Home rows</string>
@@ -538,8 +542,6 @@
     <string name="overwrite_local_settings">Overwrite local settings?</string>
     <string name="for_episodes">For episodes</string>
     <string name="suggestions_for">Suggestions for %1$s</string>
-    <string name="increase_all_cards_size">Increase size for all cards</string>
-    <string name="decrease_all_cards_size">Decrease size for all cards</string>
     <string name="use_thumb_images">Use thumb images</string>
     <string name="settings_saved">Settings saved</string>
     <string name="display_presets">Display presets</string>

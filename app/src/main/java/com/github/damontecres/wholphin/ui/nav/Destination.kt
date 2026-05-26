@@ -53,6 +53,9 @@ sealed class Destination(
     ) : Destination(true)
 
     @Serializable
+    data object DisplaySize : Destination(true)
+
+    @Serializable
     data object Search : Destination()
 
     @Serializable

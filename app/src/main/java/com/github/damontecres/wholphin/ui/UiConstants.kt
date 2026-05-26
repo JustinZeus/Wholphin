@@ -43,6 +43,8 @@ object AppColors {
 
 const val DEFAULT_PAGE_SIZE = 100
 
+const val BASE_SPACING_DP = 16
+
 /**
  * The default [ItemFields] to fetch for most queries
  */
