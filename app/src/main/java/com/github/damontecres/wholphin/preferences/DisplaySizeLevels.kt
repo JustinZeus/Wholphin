@@ -9,6 +9,7 @@ val displaySizeLevelDisplayOrder: List<DisplaySizeLevel> =
         DisplaySizeLevel.SMALL,
         DisplaySizeLevel.DEFAULT,
         DisplaySizeLevel.LARGE,
+        DisplaySizeLevel.EXTRA_LARGE,
     )
 
 fun DisplaySizeLevel.scaledSp(baseSp: Int): TextUnit {
@@ -22,14 +23,14 @@ fun DisplaySizeLevel.scaledSp(baseSp: Int): TextUnit {
                     10 -> 8
                     12 -> 10
                     13 -> 11
-                    14 -> 12
+                    14 -> 11
                     16 -> 13
                     18 -> 15
-                    20 -> 17
+                    20 -> 16
                     24 -> 20
-                    28 -> 24
-                    56 -> 47
-                    64 -> 54
+                    28 -> 23
+                    56 -> 46
+                    64 -> 52
                     else -> null
                 }
             }
@@ -53,17 +54,34 @@ fun DisplaySizeLevel.scaledSp(baseSp: Int): TextUnit {
 
             DisplaySizeLevel.LARGE -> {
                 when (baseSp) {
+                    10 -> 11
+                    12 -> 13
+                    13 -> 14
+                    14 -> 15
+                    16 -> 18
+                    18 -> 20
+                    20 -> 22
+                    24 -> 26
+                    28 -> 31
+                    56 -> 62
+                    64 -> 70
+                    else -> null
+                }
+            }
+
+            DisplaySizeLevel.EXTRA_LARGE -> {
+                when (baseSp) {
                     10 -> 12
                     12 -> 14
-                    13 -> 15
-                    14 -> 16
+                    13 -> 16
+                    14 -> 17
                     16 -> 19
-                    18 -> 21
-                    20 -> 23
-                    24 -> 28
-                    28 -> 32
-                    56 -> 65
-                    64 -> 74
+                    18 -> 22
+                    20 -> 24
+                    24 -> 29
+                    28 -> 34
+                    56 -> 67
+                    64 -> 77
                     else -> null
                 }
             }
@@ -77,9 +95,10 @@ fun DisplaySizeLevel.scaledSp(baseSp: Int): TextUnit {
 
 fun DisplaySizeLevel.textPercent(): Int =
     when (this) {
-        DisplaySizeLevel.EXTRA_SMALL -> 84
+        DisplaySizeLevel.EXTRA_SMALL -> 82
         DisplaySizeLevel.SMALL -> 92
-        DisplaySizeLevel.LARGE -> 116
+        DisplaySizeLevel.LARGE -> 110
+        DisplaySizeLevel.EXTRA_LARGE -> 120
         DisplaySizeLevel.DEFAULT, DisplaySizeLevel.UNRECOGNIZED -> 100
     }
 
@@ -87,7 +106,8 @@ fun DisplaySizeLevel.cardPercent(): Int =
     when (this) {
         DisplaySizeLevel.EXTRA_SMALL -> 78
         DisplaySizeLevel.SMALL -> 90
-        DisplaySizeLevel.LARGE -> 116
+        DisplaySizeLevel.LARGE -> 115
+        DisplaySizeLevel.EXTRA_LARGE -> 130
         DisplaySizeLevel.DEFAULT, DisplaySizeLevel.UNRECOGNIZED -> 100
     }
 
@@ -95,6 +115,7 @@ fun DisplaySizeLevel.spacingPercent(): Int =
     when (this) {
         DisplaySizeLevel.EXTRA_SMALL -> 75
         DisplaySizeLevel.SMALL -> 88
-        DisplaySizeLevel.LARGE -> 125
+        DisplaySizeLevel.LARGE -> 118
+        DisplaySizeLevel.EXTRA_LARGE -> 135
         DisplaySizeLevel.DEFAULT, DisplaySizeLevel.UNRECOGNIZED -> 100
     }

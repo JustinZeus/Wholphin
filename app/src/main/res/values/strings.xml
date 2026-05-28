@@ -405,6 +405,7 @@
     <string name="display_size_level_small">Small</string>
     <string name="display_size_level_default">Default</string>
     <string name="display_size_level_large">Large</string>
+    <string name="display_size_level_extra_large">Extra large</string>
     <string name="aspect_ratio">Aspect Ratio</string>
     <string name="show_details">Show details</string>
     <string name="image_type">Image type</string>
@@ -606,6 +607,7 @@
         <item>@string/display_size_level_small</item>
         <item>@string/display_size_level_default</item>
         <item>@string/display_size_level_large</item>
+        <item>@string/display_size_level_extra_large</item>
     </string-array>
 
     <string name="skip_ignore">Ignore</string>

@@ -118,8 +118,8 @@ class InterfaceHelpersTest {
                     ),
                 cardSizeLevel = DisplaySizeLevel.LARGE,
             )
-        // LARGE → cardPercent() = 116. 172 * 116 / 100 = 199 (integer truncation).
-        assertEquals(199, customization.cardHeightDp)
+        // LARGE → cardPercent() = 115. 172 * 115 / 100 = 197 (integer truncation).
+        assertEquals(197, customization.cardHeightDp)
     }
 
     @Test
@@ -132,8 +132,8 @@ class InterfaceHelpersTest {
                     ),
                 spacingLevel = DisplaySizeLevel.LARGE,
             )
-        // LARGE → spacingPercent() = 125. BASE_SPACING_DP = 16. 16 * 125 / 100 = 20.
-        assertEquals(20, customization.spacingDp)
+        // LARGE → spacingPercent() = 118. BASE_SPACING_DP = 16. 16 * 118 / 100 = 18.
+        assertEquals(18, customization.spacingDp)
     }
 
     @Test
