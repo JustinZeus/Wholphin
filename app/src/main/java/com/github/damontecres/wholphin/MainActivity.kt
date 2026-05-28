@@ -232,6 +232,7 @@ class MainActivity : AppCompatActivity() {
                     WholphinTheme(
                         true,
                         appThemeColors = appPreferences.interfacePreferences.appThemeColors,
+                        textSizeLevel = appPreferences.interfacePreferences.textSizeLevel,
                     ) {
                         ProvideLocalClock {
                             MainContent(

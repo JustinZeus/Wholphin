@@ -100,7 +100,10 @@ class WholphinDreamService :
                                 debugLogging = false,
                                 enableCache = true,
                             )
-                            WholphinTheme(appThemeColors = prefs.interfacePreferences.appThemeColors) {
+                            WholphinTheme(
+                                appThemeColors = prefs.interfacePreferences.appThemeColors,
+                                textSizeLevel = prefs.interfacePreferences.textSizeLevel,
+                            ) {
                                 ProvideLocalClock {
                                     val screensaverPrefs = prefs.interfacePreferences.screensaverPreference
                                     val currentItem by itemFlow.collectAsState(null)

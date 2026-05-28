@@ -3,8 +3,10 @@ package com.github.damontecres.wholphin.ui.theme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.remember
 import androidx.tv.material3.MaterialTheme
 import com.github.damontecres.wholphin.preferences.AppThemeColors
+import com.github.damontecres.wholphin.preferences.DisplaySizeLevel
 import com.github.damontecres.wholphin.ui.theme.colors.BlueThemeColors
 import com.github.damontecres.wholphin.ui.theme.colors.BoldBlueThemeColors
 import com.github.damontecres.wholphin.ui.theme.colors.GreenThemeColors
@@ -30,6 +32,7 @@ fun getThemeColors(appThemeColors: AppThemeColors): ThemeColors =
 fun WholphinTheme(
     darkTheme: Boolean = true,
     appThemeColors: AppThemeColors = AppThemeColors.PURPLE,
+    textSizeLevel: DisplaySizeLevel = DisplaySizeLevel.DEFAULT,
     content: @Composable () -> Unit,
 ) {
     val themeColors = getThemeColors(appThemeColors)
@@ -39,14 +42,16 @@ fun WholphinTheme(
             darkTheme -> themeColors.darkScheme
             else -> themeColors.lightScheme
         }
+    val tvTypography = remember(textSizeLevel) { AppTypography.scaledBy(textSizeLevel) }
+    val materialTypography = remember(tvTypography) { tvTypography.toMaterialTypography() }
     CompositionLocalProvider(LocalTheme provides appThemeColors) {
         androidx.compose.material3.MaterialTheme(
             colorScheme = if (darkTheme) themeColors.darkSchemeMaterial else themeColors.lightSchemeMaterial,
-            typography = androidx.compose.material3.Typography(),
+            typography = materialTypography,
         ) {
             MaterialTheme(
                 colorScheme = colorScheme,
-                typography = AppTypography,
+                typography = tvTypography,
                 content = content,
             )
         }
