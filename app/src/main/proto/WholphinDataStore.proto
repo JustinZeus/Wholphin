@@ -177,6 +177,13 @@ enum DisplayToggle{
   COMMUNITY_RATING = 2;
 }
 
+enum DisplaySizeLevel{
+  DEFAULT = 0;
+  EXTRA_SMALL = 1;
+  SMALL = 2;
+  LARGE = 3;
+}
+
 message InterfacePreferences {
   ThemeSongVolume play_theme_songs = 1;
   bool remember_selected_tab = 2;
@@ -193,9 +200,9 @@ message InterfacePreferences {
   bool show_logos = 13;
   SearchPreferences search_preferences = 14;
   repeated DisplayToggle display_toggles = 15;
-  int32 ui_scale_percent = 16;
-  int32 card_size_percent = 17;
-  int32 spacing_percent = 18;
+  DisplaySizeLevel text_size_level = 19;
+  DisplaySizeLevel card_size_level = 20;
+  DisplaySizeLevel spacing_level = 21;
 }
 
 message AdvancedPreferences {

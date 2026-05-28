@@ -1,9 +1,11 @@
 package com.github.damontecres.wholphin.ui.util
 
 import androidx.compose.runtime.staticCompositionLocalOf
-import com.github.damontecres.wholphin.preferences.AppPreference
 import com.github.damontecres.wholphin.preferences.AppPreferences
+import com.github.damontecres.wholphin.preferences.DisplaySizeLevel
 import com.github.damontecres.wholphin.preferences.DisplayToggle
+import com.github.damontecres.wholphin.preferences.cardPercent
+import com.github.damontecres.wholphin.preferences.spacingPercent
 import com.github.damontecres.wholphin.ui.BASE_SPACING_DP
 import com.github.damontecres.wholphin.ui.Cards
 import java.util.EnumSet
@@ -13,9 +15,9 @@ import java.util.EnumSet
  */
 data class InterfaceCustomization(
     val enabledDisplayToggles: EnumSet<DisplayToggle>,
-    val uiScalePercent: Int = AppPreference.UiScale.defaultValue.toInt(),
-    val cardSizePercent: Int = AppPreference.CardSize.defaultValue.toInt(),
-    val spacingPercent: Int = AppPreference.Spacing.defaultValue.toInt(),
+    val textSizeLevel: DisplaySizeLevel = DisplaySizeLevel.DEFAULT,
+    val cardSizeLevel: DisplaySizeLevel = DisplaySizeLevel.DEFAULT,
+    val spacingLevel: DisplaySizeLevel = DisplaySizeLevel.DEFAULT,
 ) {
     constructor(prefs: AppPreferences) : this(
         enabledDisplayToggles =
@@ -26,13 +28,16 @@ data class InterfaceCustomization(
                     EnumSet.copyOf(it)
                 }
             },
-        uiScalePercent =
-            prefs.interfacePreferences.uiScalePercent.withinBoundsOrDefault(AppPreference.UiScale),
-        cardSizePercent =
-            prefs.interfacePreferences.cardSizePercent.withinBoundsOrDefault(AppPreference.CardSize),
-        spacingPercent =
-            prefs.interfacePreferences.spacingPercent.withinBoundsOrDefault(AppPreference.Spacing),
+        textSizeLevel = prefs.interfacePreferences.textSizeLevel,
+        cardSizeLevel = prefs.interfacePreferences.cardSizeLevel,
+        spacingLevel = prefs.interfacePreferences.spacingLevel,
     )
+
+    val cardSizePercent: Int
+        get() = cardSizeLevel.cardPercent()
+
+    val spacingPercent: Int
+        get() = spacingLevel.spacingPercent()
 
     val cardHeightDp: Int
         get() = Cards.HEIGHT_2X3_DP * cardSizePercent / 100

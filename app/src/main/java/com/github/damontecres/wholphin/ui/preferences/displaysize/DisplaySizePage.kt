@@ -16,17 +16,13 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -40,37 +36,31 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusRestorer
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.tv.material3.Icon
 import androidx.tv.material3.MaterialTheme
-import androidx.tv.material3.Text
 import com.github.damontecres.wholphin.R
 import com.github.damontecres.wholphin.data.model.BaseItem
+import com.github.damontecres.wholphin.preferences.AppChoicePreference
 import com.github.damontecres.wholphin.preferences.AppPreference
 import com.github.damontecres.wholphin.preferences.AppPreferences
-import com.github.damontecres.wholphin.preferences.AppSliderPreference
+import com.github.damontecres.wholphin.preferences.DisplaySizeLevel
 import com.github.damontecres.wholphin.preferences.updateInterfacePreferences
 import com.github.damontecres.wholphin.services.BackdropService
-import com.github.damontecres.wholphin.ui.FontAwesome
 import com.github.damontecres.wholphin.ui.data.RowColumn
 import com.github.damontecres.wholphin.ui.launchIO
 import com.github.damontecres.wholphin.ui.main.HomePageContent
-import com.github.damontecres.wholphin.ui.main.settings.HomeSettingsListItem
 import com.github.damontecres.wholphin.ui.main.settings.TitleText
 import com.github.damontecres.wholphin.ui.main.settings.settingsWidth
+import com.github.damontecres.wholphin.ui.preferences.ChoicePreference
 import com.github.damontecres.wholphin.ui.preferences.PreferencesViewModel
-import com.github.damontecres.wholphin.ui.preferences.SliderPreference
 import com.github.damontecres.wholphin.ui.tryRequestFocus
 import com.github.damontecres.wholphin.ui.util.ResStringProvider
-import com.github.damontecres.wholphin.ui.util.scaledDensity
-import com.github.damontecres.wholphin.ui.util.withinBoundsOrDefault
 import com.github.damontecres.wholphin.util.HomeRowLoadingState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -98,8 +88,6 @@ private val PreviewNavRailIcons: List<ImageVector> =
         Icons.Default.Search,
         Icons.Default.Add,
         Icons.Default.Star,
-        Icons.Default.PlayArrow,
-        Icons.Default.ArrowDropDown,
         Icons.Default.Settings,
     )
 
@@ -163,110 +151,73 @@ fun DisplaySizePage(
     val scope = rememberCoroutineScope()
     val iface = preferences.interfacePreferences
 
-    val uiScale = iface.uiScalePercent.withinBoundsOrDefault(AppPreference.UiScale)
-    val cardSize = iface.cardSizePercent.withinBoundsOrDefault(AppPreference.CardSize)
-    val spacing = iface.spacingPercent.withinBoundsOrDefault(AppPreference.Spacing)
-
     val posters by previewViewModel.posters.collectAsState()
     val episodes by previewViewModel.episodes.collectAsState()
 
-    // Freezes the rail width and slider labels so they don't reflow under the user's finger
-    // while dragging UI scale.
-    val ambientDensity = LocalDensity.current
-    val pageDensity = remember { ambientDensity }
-
-    val context = LocalContext.current
-    val systemDensity =
-        remember {
-            val dm = context.resources.displayMetrics
-            Density(
-                density = dm.density,
-                fontScale = context.resources.configuration.fontScale,
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = modifier.fillMaxSize(),
+    ) {
+        Box(
+            modifier =
+                Modifier
+                    .width(settingsWidth)
+                    .fillMaxHeight()
+                    .background(color = MaterialTheme.colorScheme.surface)
+                    .padding(8.dp),
+        ) {
+            DisplaySizeSettingsColumn(
+                textLevel = iface.textSizeLevel,
+                cardLevel = iface.cardSizeLevel,
+                spacingLevel = iface.spacingLevel,
+                onChangeTextLevel = { value ->
+                    scope.launch {
+                        viewModel.preferenceDataStore.updateData {
+                            it.updateInterfacePreferences { textSizeLevel = value }
+                        }
+                    }
+                },
+                onChangeCardLevel = { value ->
+                    scope.launch {
+                        viewModel.preferenceDataStore.updateData {
+                            it.updateInterfacePreferences { cardSizeLevel = value }
+                        }
+                    }
+                },
+                onChangeSpacingLevel = { value ->
+                    scope.launch {
+                        viewModel.preferenceDataStore.updateData {
+                            it.updateInterfacePreferences { spacingLevel = value }
+                        }
+                    }
+                },
             )
         }
-    val previewDensity =
-        remember(systemDensity, uiScale) { scaledDensity(systemDensity, uiScale) }
 
-    CompositionLocalProvider(LocalDensity provides pageDensity) {
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            modifier = modifier.fillMaxSize(),
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxHeight()
+                    .weight(1f),
         ) {
-            Box(
-                modifier =
-                    Modifier
-                        .width(settingsWidth)
-                        .fillMaxHeight()
-                        .background(color = MaterialTheme.colorScheme.surface)
-                        .padding(8.dp),
-            ) {
-                DisplaySizeSettingsColumn(
-                    uiScale = uiScale,
-                    cardSize = cardSize,
-                    spacing = spacing,
-                    onUiScaleChange = { value ->
-                        scope.launch {
-                            viewModel.preferenceDataStore.updateData {
-                                it.updateInterfacePreferences { uiScalePercent = value }
-                            }
-                        }
-                    },
-                    onCardSizeChange = { value ->
-                        scope.launch {
-                            viewModel.preferenceDataStore.updateData {
-                                it.updateInterfacePreferences { cardSizePercent = value }
-                            }
-                        }
-                    },
-                    onSpacingChange = { value ->
-                        scope.launch {
-                            viewModel.preferenceDataStore.updateData {
-                                it.updateInterfacePreferences { spacingPercent = value }
-                            }
-                        }
-                    },
-                    onClickReset = {
-                        scope.launch {
-                            viewModel.preferenceDataStore.updateData {
-                                it.updateInterfacePreferences {
-                                    uiScalePercent = AppPreference.UiScale.defaultValue.toInt()
-                                    cardSizePercent = AppPreference.CardSize.defaultValue.toInt()
-                                    spacingPercent = AppPreference.Spacing.defaultValue.toInt()
-                                }
-                            }
-                        }
-                    },
-                )
-            }
-
-            Box(
-                modifier =
-                    Modifier
-                        .fillMaxHeight()
-                        .weight(1f),
-            ) {
-                CompositionLocalProvider(LocalDensity provides previewDensity) {
-                    DisplaySizePreview(
-                        posters = posters,
-                        episodes = episodes,
-                        showLogos = iface.showLogos,
-                        onUpdateBackdrop = previewViewModel::updateBackdrop,
-                    )
-                }
-            }
+            DisplaySizePreview(
+                posters = posters,
+                episodes = episodes,
+                showLogos = iface.showLogos,
+                onUpdateBackdrop = previewViewModel::updateBackdrop,
+            )
         }
     }
 }
 
 @Composable
 private fun DisplaySizeSettingsColumn(
-    uiScale: Int,
-    cardSize: Int,
-    spacing: Int,
-    onUiScaleChange: (Int) -> Unit,
-    onCardSizeChange: (Int) -> Unit,
-    onSpacingChange: (Int) -> Unit,
-    onClickReset: () -> Unit,
+    textLevel: DisplaySizeLevel,
+    cardLevel: DisplaySizeLevel,
+    spacingLevel: DisplaySizeLevel,
+    onChangeTextLevel: (DisplaySizeLevel) -> Unit,
+    onChangeCardLevel: (DisplaySizeLevel) -> Unit,
+    onChangeSpacingLevel: (DisplaySizeLevel) -> Unit,
 ) {
     val firstFocus = remember { FocusRequester() }
     LaunchedEffect(Unit) { firstFocus.tryRequestFocus() }
@@ -282,39 +233,25 @@ private fun DisplaySizeSettingsColumn(
                     .focusRestorer(firstFocus),
         ) {
             item {
-                DisplaySizeSlider(
-                    preference = AppPreference.UiScale,
-                    value = uiScale,
-                    onChange = onUiScaleChange,
+                LevelChoicePreference(
+                    preference = AppPreference.TextSize,
+                    currentValue = textLevel,
+                    onChange = onChangeTextLevel,
                     modifier = Modifier.focusRequester(firstFocus),
                 )
             }
             item {
-                DisplaySizeSlider(
+                LevelChoicePreference(
                     preference = AppPreference.CardSize,
-                    value = cardSize,
-                    onChange = onCardSizeChange,
+                    currentValue = cardLevel,
+                    onChange = onChangeCardLevel,
                 )
             }
             item {
-                DisplaySizeSlider(
+                LevelChoicePreference(
                     preference = AppPreference.Spacing,
-                    value = spacing,
-                    onChange = onSpacingChange,
-                )
-            }
-            item { HorizontalDivider() }
-            item {
-                HomeSettingsListItem(
-                    selected = false,
-                    headlineText = stringResource(R.string.reset_to_defaults),
-                    leadingContent = {
-                        Text(
-                            text = stringResource(R.string.fa_arrows_rotate),
-                            fontFamily = FontAwesome,
-                        )
-                    },
-                    onClick = onClickReset,
+                    currentValue = spacingLevel,
+                    onChange = onChangeSpacingLevel,
                 )
             }
         }
@@ -322,19 +259,20 @@ private fun DisplaySizeSettingsColumn(
 }
 
 @Composable
-private fun DisplaySizeSlider(
-    preference: AppSliderPreference<AppPreferences>,
-    value: Int,
-    onChange: (Int) -> Unit,
+private fun LevelChoicePreference(
+    preference: AppChoicePreference<AppPreferences, DisplaySizeLevel>,
+    currentValue: DisplaySizeLevel,
+    onChange: (DisplaySizeLevel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    SliderPreference(
-        preference = preference,
+    val levelNames = stringArrayResource(preference.displayValues).toList()
+    val selectedIndex = preference.valueToIndex(currentValue)
+    ChoicePreference(
         title = stringResource(preference.title),
-        summary = preference.summary(context, value.toLong()),
-        value = value.toLong(),
-        onChange = { onChange(it.toInt()) },
+        summary = levelNames.getOrNull(selectedIndex),
+        possibleValues = levelNames,
+        selectedIndex = selectedIndex,
+        onValueChange = { onChange(preference.indexToValue(it)) },
         modifier = modifier,
     )
 }

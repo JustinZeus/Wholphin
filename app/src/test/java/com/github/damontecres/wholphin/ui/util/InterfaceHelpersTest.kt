@@ -5,6 +5,7 @@ import com.github.damontecres.wholphin.data.model.HomeRowConfig
 import com.github.damontecres.wholphin.data.model.HomeRowViewOptions
 import com.github.damontecres.wholphin.preferences.AppPreference
 import com.github.damontecres.wholphin.preferences.AppPreferences
+import com.github.damontecres.wholphin.preferences.DisplaySizeLevel
 import com.github.damontecres.wholphin.services.migrateLegacyRowSpacing
 import com.github.damontecres.wholphin.ui.AspectRatio
 import com.github.damontecres.wholphin.ui.Cards
@@ -16,31 +17,28 @@ import java.util.EnumSet
 class InterfaceHelpersTest {
     @Test
     fun `withinBoundsOrDefault returns value when in range`() {
-        assertEquals(100, 100.withinBoundsOrDefault(AppPreference.CardSize))
-        assertEquals(75, 75.withinBoundsOrDefault(AppPreference.CardSize))
-        assertEquals(150, 150.withinBoundsOrDefault(AppPreference.CardSize))
+        assertEquals(30, 30.withinBoundsOrDefault(AppPreference.SkipForward))
+        assertEquals(60, 60.withinBoundsOrDefault(AppPreference.SkipForward))
+        assertEquals(120, 120.withinBoundsOrDefault(AppPreference.SkipForward))
     }
 
     @Test
     fun `withinBoundsOrDefault returns default when below min`() {
-        // CardSize is 50..150 default 100; Spacing is 25..175 default 100.
-        assertEquals(100, 49.withinBoundsOrDefault(AppPreference.CardSize))
-        assertEquals(100, 0.withinBoundsOrDefault(AppPreference.Spacing))
+        assertEquals(30, 4.withinBoundsOrDefault(AppPreference.SkipForward))
+        assertEquals(30, 0.withinBoundsOrDefault(AppPreference.SkipForward))
     }
 
     @Test
     fun `withinBoundsOrDefault returns default when above max`() {
-        assertEquals(100, 151.withinBoundsOrDefault(AppPreference.CardSize))
-        assertEquals(100, 200.withinBoundsOrDefault(AppPreference.Spacing))
+        assertEquals(30, 301.withinBoundsOrDefault(AppPreference.SkipForward))
+        assertEquals(30, 1000.withinBoundsOrDefault(AppPreference.SkipForward))
     }
 
     @Test
     fun `withinBoundsOrDefault includes both bounds inclusively`() {
         // Sanity: min and max themselves are accepted, NOT replaced with default.
-        assertEquals(50, 50.withinBoundsOrDefault(AppPreference.CardSize))
-        assertEquals(150, 150.withinBoundsOrDefault(AppPreference.CardSize))
-        assertEquals(25, 25.withinBoundsOrDefault(AppPreference.Spacing))
-        assertEquals(175, 175.withinBoundsOrDefault(AppPreference.Spacing))
+        assertEquals(5, 5.withinBoundsOrDefault(AppPreference.SkipForward))
+        assertEquals(300, 300.withinBoundsOrDefault(AppPreference.SkipForward))
     }
 
     @Test
@@ -134,38 +132,38 @@ class InterfaceHelpersTest {
     }
 
     @Test
-    fun `InterfaceCustomization cardHeightDp computes global from slider percent`() {
+    fun `InterfaceCustomization cardHeightDp at DEFAULT level matches natural base`() {
         val customization = InterfaceCustomization(prefs = AppPreferences.getDefaultInstance())
-        // Default cardSizePercent is 100, so cardHeightDp == HEIGHT_2X3_DP.
+        // proto-zero-default lands cardSizeLevel on DEFAULT (100%), so cardHeightDp == HEIGHT_2X3_DP.
         assertEquals(Cards.HEIGHT_2X3_DP, customization.cardHeightDp)
     }
 
     @Test
-    fun `InterfaceCustomization cardHeightDp scales linearly`() {
+    fun `InterfaceCustomization cardHeightDp scales by Card level percent`() {
         val customization =
             InterfaceCustomization(
                 enabledDisplayToggles =
                     EnumSet.noneOf(
                         com.github.damontecres.wholphin.preferences.DisplayToggle::class.java,
                     ),
-                cardSizePercent = 150,
+                cardSizeLevel = DisplaySizeLevel.LARGE,
             )
-        // 172 * 150 / 100 = 258.
-        assertEquals(258, customization.cardHeightDp)
+        // LARGE → cardPercent() = 116. 172 * 116 / 100 = 199 (integer truncation).
+        assertEquals(199, customization.cardHeightDp)
     }
 
     @Test
-    fun `InterfaceCustomization spacingDp scales linearly`() {
+    fun `InterfaceCustomization spacingDp scales by Spacing level percent`() {
         val customization =
             InterfaceCustomization(
                 enabledDisplayToggles =
                     EnumSet.noneOf(
                         com.github.damontecres.wholphin.preferences.DisplayToggle::class.java,
                     ),
-                spacingPercent = 175,
+                spacingLevel = DisplaySizeLevel.LARGE,
             )
-        // BASE_SPACING_DP = 16. 16 * 175 / 100 = 28.
-        assertEquals(28, customization.spacingDp)
+        // LARGE → spacingPercent() = 125. BASE_SPACING_DP = 16. 16 * 125 / 100 = 20.
+        assertEquals(20, customization.spacingDp)
     }
 
     @Test

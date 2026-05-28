@@ -504,46 +504,67 @@ sealed interface AppPreference<Pref, T> {
                 summaryOff = R.string.disabled,
             )
 
-        val UiScale =
-            AppSliderPreference<AppPreferences>(
-                title = R.string.ui_scale,
-                defaultValue = 100,
-                min = 50,
-                max = 150,
-                interval = 5,
-                getter = { it.interfacePreferences.uiScalePercent.toLong() },
-                setter = { prefs, value ->
-                    prefs.updateInterfacePreferences { uiScalePercent = value.toInt() }
+        val TextSize =
+            AppChoicePreference<AppPreferences, DisplaySizeLevel>(
+                title = R.string.text_size,
+                defaultValue = DisplaySizeLevel.DEFAULT,
+                displayValues = R.array.display_size_levels,
+                indexToValue = {
+                    displaySizeLevelDisplayOrder.getOrElse(it) { DisplaySizeLevel.DEFAULT }
                 },
-                summarizer = { it?.let { "$it%" } },
+                valueToIndex = {
+                    displaySizeLevelDisplayOrder
+                        .indexOf(it)
+                        .let { idx ->
+                            if (idx >= 0) idx else displaySizeLevelDisplayOrder.indexOf(DisplaySizeLevel.DEFAULT)
+                        }
+                },
+                getter = { it.interfacePreferences.textSizeLevel },
+                setter = { prefs, value ->
+                    prefs.updateInterfacePreferences { textSizeLevel = value }
+                },
             )
 
         val CardSize =
-            AppSliderPreference<AppPreferences>(
+            AppChoicePreference<AppPreferences, DisplaySizeLevel>(
                 title = R.string.card_size,
-                defaultValue = 100,
-                min = 50,
-                max = 150,
-                interval = 5,
-                getter = { it.interfacePreferences.cardSizePercent.toLong() },
-                setter = { prefs, value ->
-                    prefs.updateInterfacePreferences { cardSizePercent = value.toInt() }
+                defaultValue = DisplaySizeLevel.DEFAULT,
+                displayValues = R.array.display_size_levels,
+                indexToValue = {
+                    displaySizeLevelDisplayOrder.getOrElse(it) { DisplaySizeLevel.DEFAULT }
                 },
-                summarizer = { it?.let { "$it%" } },
+                valueToIndex = {
+                    displaySizeLevelDisplayOrder
+                        .indexOf(it)
+                        .let { idx ->
+                            if (idx >= 0) idx else displaySizeLevelDisplayOrder.indexOf(DisplaySizeLevel.DEFAULT)
+                        }
+                },
+                getter = { it.interfacePreferences.cardSizeLevel },
+                setter = { prefs, value ->
+                    prefs.updateInterfacePreferences { cardSizeLevel = value }
+                },
             )
 
         val Spacing =
-            AppSliderPreference<AppPreferences>(
+            AppChoicePreference<AppPreferences, DisplaySizeLevel>(
                 title = R.string.spacing,
-                defaultValue = 100,
-                min = 25,
-                max = 175,
-                interval = 10,
-                getter = { it.interfacePreferences.spacingPercent.toLong() },
-                setter = { prefs, value ->
-                    prefs.updateInterfacePreferences { spacingPercent = value.toInt() }
+                defaultValue = DisplaySizeLevel.DEFAULT,
+                displayValues = R.array.display_size_levels,
+                indexToValue = {
+                    displaySizeLevelDisplayOrder.getOrElse(it) { DisplaySizeLevel.DEFAULT }
                 },
-                summarizer = { it?.let { "$it%" } },
+                valueToIndex = {
+                    displaySizeLevelDisplayOrder
+                        .indexOf(it)
+                        .let { idx ->
+                            if (idx >= 0) idx else displaySizeLevelDisplayOrder.indexOf(DisplaySizeLevel.DEFAULT)
+                        }
+                },
+                getter = { it.interfacePreferences.spacingLevel },
+                setter = { prefs, value ->
+                    prefs.updateInterfacePreferences { spacingLevel = value }
+                },
             )
 
         val DisplaySizePref =

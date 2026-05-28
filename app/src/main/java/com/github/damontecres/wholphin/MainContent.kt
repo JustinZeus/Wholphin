@@ -18,7 +18,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
@@ -40,7 +39,6 @@ import com.github.damontecres.wholphin.ui.setup.SwitchServerContent
 import com.github.damontecres.wholphin.ui.setup.SwitchUserContent
 import com.github.damontecres.wholphin.ui.util.InterfaceCustomization
 import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
-import com.github.damontecres.wholphin.ui.util.scaledDensity
 
 @Composable
 fun MainContent(
@@ -62,14 +60,8 @@ fun MainContent(
 //                            setupNavigationManager.backStack = backStack
         val interfaceCustomization =
             remember(appPreferences) { InterfaceCustomization(appPreferences) }
-        val baseDensity = LocalDensity.current
-        val uiScaleDensity =
-            remember(baseDensity, interfaceCustomization.uiScalePercent) {
-                scaledDensity(baseDensity, interfaceCustomization.uiScalePercent)
-            }
         CompositionLocalProvider(
             LocalInterfaceCustomization provides interfaceCustomization,
-            LocalDensity provides uiScaleDensity,
         ) {
             NavDisplay(
                 backStack = backStack,
