@@ -201,9 +201,9 @@ message InterfacePreferences {
   bool show_logos = 13;
   SearchPreferences search_preferences = 14;
   repeated DisplayToggle display_toggles = 15;
-  DisplaySizeLevel text_size_level = 19;
-  DisplaySizeLevel card_size_level = 20;
-  DisplaySizeLevel spacing_level = 21;
+  DisplaySizeLevel text_size_level = 16;
+  DisplaySizeLevel card_size_level = 17;
+  DisplaySizeLevel spacing_level = 18;
 }
 
 message AdvancedPreferences {
