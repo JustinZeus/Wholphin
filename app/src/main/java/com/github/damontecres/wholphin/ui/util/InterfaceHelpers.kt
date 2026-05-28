@@ -1,11 +1,13 @@
 package com.github.damontecres.wholphin.ui.util
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.Density
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import com.github.damontecres.wholphin.data.model.HomeRowViewOptions
 import com.github.damontecres.wholphin.preferences.AppSliderPreference
+import com.github.damontecres.wholphin.preferences.scaledSp
 import com.github.damontecres.wholphin.ui.AspectRatio
 import com.github.damontecres.wholphin.ui.Cards
 
@@ -26,8 +28,8 @@ internal fun naturalCardBaseDp(aspectRatio: AspectRatio): Int =
         AspectRatio.TALL, AspectRatio.SQUARE, AspectRatio.FOUR_THREE -> Cards.HEIGHT_2X3_DP
     }
 
-// The global Card slider, the per-row multiplier, and any preset-set absolute heightDp
-// all stack. Preset 148dp + global 150% + per-row 100% = 222dp. The base is the row's
+// The global Card size, the per-row multiplier, and any preset-set absolute heightDp
+// all stack. Preset 148dp + global 116% + per-row 110% = ~189dp. The base is the row's
 // preset if present, otherwise the natural height for its aspect.
 internal fun resolveCardHeight(
     heightDp: Int,
@@ -40,19 +42,9 @@ internal fun resolveCardHeight(
     return base * globalCardSizePercent / 100 * cardSizeMultiplier / 100
 }
 
-// Scales density (and therefore both dp layouts and sp text) linearly by uiScalePercent.
-// fontScale is left at the user's system value so Android's accessibility setting still
-// applies on top - scaling both would render text at factor^2 instead of factor.
-internal fun scaledDensity(
-    base: Density,
-    uiScalePercent: Int,
-): Density {
-    val factor = uiScalePercent / 100f
-    return Density(
-        density = base.density * factor,
-        fontScale = base.fontScale,
-    )
-}
+@Composable
+@ReadOnlyComposable
+internal fun scaledSp(baseSp: Int): TextUnit = LocalInterfaceCustomization.current.textSizeLevel.scaledSp(baseSp)
 
 internal fun Int.withinBoundsOrDefault(preference: AppSliderPreference<*>): Int {
     val min = preference.min.toInt()

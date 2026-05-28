@@ -34,7 +34,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.isSpecified
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
 import androidx.tv.material3.MaterialTheme
@@ -48,6 +47,7 @@ import com.github.damontecres.wholphin.ui.Cards
 import com.github.damontecres.wholphin.ui.FontAwesome
 import com.github.damontecres.wholphin.ui.LocalImageUrlService
 import com.github.damontecres.wholphin.ui.enableMarquee
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import org.jellyfin.sdk.model.api.ImageType
 
 /**
@@ -179,7 +179,7 @@ fun BannerCard(
                             .padding(8.dp),
                     color = colorResource(android.R.color.holo_red_light),
                     text = stringResource(R.string.fa_heart),
-                    fontSize = 16.sp,
+                    fontSize = scaledSp(16),
                     fontFamily = FontAwesome,
                 )
             }

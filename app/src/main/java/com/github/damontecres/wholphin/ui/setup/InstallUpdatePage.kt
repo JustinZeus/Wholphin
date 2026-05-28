@@ -36,7 +36,6 @@ import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -60,6 +59,7 @@ import com.github.damontecres.wholphin.ui.dimAndBlur
 import com.github.damontecres.wholphin.ui.formatBytes
 import com.github.damontecres.wholphin.ui.launchIO
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import com.github.damontecres.wholphin.util.ExceptionHandler
 import com.github.damontecres.wholphin.util.LoadingState
 import com.github.damontecres.wholphin.util.Version
@@ -369,7 +369,7 @@ fun DownloadDialog(
             ) {
                 Text(
                     text = stringResource(R.string.downloading),
-                    fontSize = 24.sp,
+                    fontSize = scaledSp(24),
                     color = MaterialTheme.colorScheme.onSurface,
                 )
                 if (progress != null) {
@@ -396,7 +396,7 @@ fun DownloadDialog(
                 val size = formatBytes(contentLength)
                 Text(
                     text = "$bytes / $size",
-                    fontSize = 18.sp,
+                    fontSize = scaledSp(18),
                     color = MaterialTheme.colorScheme.onSurface,
                 )
             }

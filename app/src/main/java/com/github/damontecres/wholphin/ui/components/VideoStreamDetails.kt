@@ -23,7 +23,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.ProvideTextStyle
 import androidx.tv.material3.Text
@@ -41,6 +40,7 @@ import com.github.damontecres.wholphin.ui.util.StreamFormatting.formatAudioCodec
 import com.github.damontecres.wholphin.ui.util.StreamFormatting.formatSubtitleCodec
 import com.github.damontecres.wholphin.ui.util.StreamFormatting.formatVideoRange
 import com.github.damontecres.wholphin.ui.util.StreamFormatting.resolutionString
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import com.github.damontecres.wholphin.util.languageName
 import org.jellyfin.sdk.model.api.MediaSourceInfo
 import org.jellyfin.sdk.model.api.MediaStream
@@ -185,7 +185,7 @@ fun StreamLabel(
         ProvideTextStyle(
             TextStyle(
                 color = MaterialTheme.colorScheme.onSurface,
-                fontSize = 12.sp,
+                fontSize = scaledSp(12),
                 fontWeight = FontWeight.SemiBold,
             ),
         ) {

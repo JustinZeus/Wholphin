@@ -19,7 +19,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.ClickableSurfaceDefaults
 import androidx.tv.material3.LocalContentColor
 import androidx.tv.material3.MaterialTheme
@@ -29,6 +28,7 @@ import androidx.tv.material3.surfaceColorAtElevation
 import coil3.compose.AsyncImage
 import com.github.damontecres.wholphin.R
 import com.github.damontecres.wholphin.ui.FontAwesome
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import java.time.LocalDateTime
 
 @Composable
@@ -87,7 +87,7 @@ fun Program(
                     text = stringResource(R.string.fa_caret_left),
                     fontFamily = FontAwesome,
                     color = LocalContentColor.current,
-                    fontSize = 16.sp,
+                    fontSize = scaledSp(16),
                     modifier =
                         Modifier
                             .align(Alignment.CenterVertically)
@@ -104,7 +104,7 @@ fun Program(
                 Text(
                     text = title,
                     color = LocalContentColor.current,
-                    fontSize = 16.sp,
+                    fontSize = scaledSp(16),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier,
@@ -120,7 +120,7 @@ fun Program(
                     Text(
                         text = it,
                         color = LocalContentColor.current,
-                        fontSize = 14.sp,
+                        fontSize = scaledSp(14),
                         overflow = TextOverflow.Ellipsis,
                         modifier = Modifier,
                     )
@@ -197,7 +197,7 @@ fun Channel(
                         Text(
                             text = it,
                             style = MaterialTheme.typography.bodySmall,
-                            fontSize = if (showImage) 10.sp else 16.sp,
+                            fontSize = if (showImage) scaledSp(10) else scaledSp(16),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             modifier = Modifier,
@@ -209,7 +209,7 @@ fun Channel(
                 Text(
                     color = colorResource(android.R.color.holo_red_light),
                     text = stringResource(R.string.fa_heart),
-                    fontSize = 16.sp,
+                    fontSize = scaledSp(16),
                     fontFamily = FontAwesome,
                     modifier =
                         Modifier

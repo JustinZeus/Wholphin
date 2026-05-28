@@ -29,7 +29,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import coil3.compose.AsyncImage
@@ -41,6 +40,7 @@ import com.github.damontecres.wholphin.ui.FontAwesome
 import com.github.damontecres.wholphin.ui.LocalImageUrlService
 import com.github.damontecres.wholphin.ui.isNotNullOrBlank
 import com.github.damontecres.wholphin.ui.logCoilError
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import org.jellyfin.sdk.model.api.ImageType
 
 /**
@@ -166,7 +166,7 @@ fun BoxScope.ItemCardImageFallback(
             Text(
                 text = name,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 14.sp,
+                fontSize = scaledSp(14),
                 modifier =
                     Modifier
                         .padding(8.dp)
@@ -222,7 +222,6 @@ fun ItemCardImageOverlay(
                         text = numberOfVersions.toString(),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyMedium,
-//                            fontSize = 16.sp,
                         modifier = Modifier.padding(4.dp),
                     )
                 }
@@ -255,7 +254,6 @@ fun ItemCardImageOverlay(
                         text = unwatchedCount.toString(),
                         color = MaterialTheme.colorScheme.onSurface,
                         style = MaterialTheme.typography.bodyMedium,
-//                            fontSize = 16.sp,
                         modifier = Modifier.padding(4.dp),
                     )
                 }
@@ -280,7 +278,7 @@ fun ItemCardImageOverlay(
 @Composable
 fun FavoriteIndicator(
     modifier: Modifier = Modifier,
-    fontSize: TextUnit = 20.sp,
+    fontSize: TextUnit = scaledSp(20),
 ) = Text(
     color = colorResource(android.R.color.holo_red_light),
     text = stringResource(R.string.fa_heart),

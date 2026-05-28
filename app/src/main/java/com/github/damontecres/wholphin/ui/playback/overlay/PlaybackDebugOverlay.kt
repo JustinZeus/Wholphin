@@ -18,7 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.media3.common.Format
 import androidx.media3.common.util.UnstableApi
 import androidx.tv.material3.MaterialTheme
@@ -33,6 +32,7 @@ import com.github.damontecres.wholphin.ui.letNotEmpty
 import com.github.damontecres.wholphin.ui.playback.AnalyticsState
 import com.github.damontecres.wholphin.ui.playback.CurrentPlayback
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import com.github.damontecres.wholphin.util.TrackSupport
 import com.github.damontecres.wholphin.util.TrackSupportReason
 import com.github.damontecres.wholphin.util.TrackType
@@ -85,7 +85,7 @@ fun PlaybackDebugOverlay(
     }
     val textStyle =
         MaterialTheme.typography.bodySmall.copy(
-            fontSize = 10.sp,
+            fontSize = scaledSp(10),
             color = MaterialTheme.colorScheme.onSurface,
         )
 

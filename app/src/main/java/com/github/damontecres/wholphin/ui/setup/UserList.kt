@@ -39,7 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.tv.material3.Border
 import androidx.tv.material3.Button
@@ -60,6 +59,7 @@ import com.github.damontecres.wholphin.ui.isNotNullOrBlank
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
 import com.github.damontecres.wholphin.ui.toServerString
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import java.util.UUID
 
 /**
@@ -333,7 +333,7 @@ fun UserIconCardImage(
             Text(
                 text = firstLetter,
                 style = MaterialTheme.typography.bodyLarge,
-                fontSize = 14.sp,
+                fontSize = scaledSp(14),
                 fontWeight = FontWeight.Normal,
                 color = MaterialTheme.colorScheme.onSurface,
                 textAlign = TextAlign.Center,

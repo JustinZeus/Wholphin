@@ -27,7 +27,6 @@ import androidx.compose.ui.input.key.type
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.github.damontecres.wholphin.R
@@ -38,6 +37,7 @@ import com.github.damontecres.wholphin.ui.components.Button
 import com.github.damontecres.wholphin.ui.components.TextButton
 import com.github.damontecres.wholphin.ui.playback.isEnterKey
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
+import com.github.damontecres.wholphin.ui.util.scaledSp
 
 @Composable
 fun PinEntry(
@@ -101,7 +101,7 @@ fun PinEntry(
                 )
                 Text(
                     text = stringResource(R.string.will_remove_pin),
-                    fontSize = 10.sp,
+                    fontSize = scaledSp(10),
                 )
             }
         }

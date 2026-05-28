@@ -36,12 +36,12 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
 import com.github.damontecres.wholphin.ui.PreviewTvSpec
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import timber.log.Timber
 
 @Composable
@@ -147,7 +147,7 @@ fun Tab(
         ) {
             Text(
                 text = title,
-                fontSize = 16.sp,
+                fontSize = scaledSp(16),
                 color = contentColor,
                 modifier = Modifier.padding(horizontal = 16.dp),
             )

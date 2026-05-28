@@ -31,7 +31,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
@@ -54,6 +53,7 @@ import com.github.damontecres.wholphin.ui.FontAwesome
 import com.github.damontecres.wholphin.ui.PreviewTvSpec
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
 import com.github.damontecres.wholphin.ui.tryRequestFocus
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import java.util.UUID
 
 /**
@@ -399,7 +399,7 @@ fun ExpandableFilterButton(
                 text = stringResource(R.string.fa_filter),
                 style = MaterialTheme.typography.titleSmall,
                 color = iconColor,
-                fontSize = 16.sp,
+                fontSize = scaledSp(16),
                 fontFamily = FontAwesome,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.Center),

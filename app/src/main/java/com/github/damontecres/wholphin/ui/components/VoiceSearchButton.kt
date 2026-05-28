@@ -43,7 +43,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.tv.material3.ButtonDefaults
@@ -54,13 +53,12 @@ import androidx.tv.material3.Text
 import androidx.tv.material3.surfaceColorAtElevation
 import com.github.damontecres.wholphin.R
 import com.github.damontecres.wholphin.ui.FontAwesome
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import kotlinx.coroutines.delay
 
 private const val ERROR_AUTO_DISMISS_DELAY_MS = 3000L
 private const val SOUND_LEVEL_SCALE_FACTOR = 0.15f
 private val BUBBLE_SIZE = 160.dp
-private val MIC_ICON_FONT_SIZE = 56.sp
-private val BUTTON_ICON_FONT_SIZE = 20.sp
 private val CONTENT_SPACING = 48.dp
 private val HORIZONTAL_PADDING = 64.dp
 private val DISMISS_HINT_BOTTOM_PADDING = 32.dp
@@ -174,7 +172,7 @@ fun VoiceSearchButton(
             Text(
                 text = stringResource(R.string.fa_microphone),
                 fontFamily = FontAwesome,
-                fontSize = BUTTON_ICON_FONT_SIZE,
+                fontSize = scaledSp(20),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.semantics { contentDescription = voiceSearchDesc },
             )
@@ -347,7 +345,7 @@ private fun VoiceSearchOverlay(
                         Text(
                             text = stringResource(R.string.fa_microphone),
                             fontFamily = FontAwesome,
-                            fontSize = MIC_ICON_FONT_SIZE,
+                            fontSize = scaledSp(56),
                             color = onPrimaryColor,
                             textAlign = TextAlign.Center,
                             modifier = Modifier.semantics { contentDescription = voiceSearchDesc },

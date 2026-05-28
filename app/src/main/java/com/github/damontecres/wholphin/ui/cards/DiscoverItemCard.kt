@@ -30,7 +30,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Card
 import androidx.tv.material3.CardDefaults
 import androidx.tv.material3.MaterialTheme
@@ -46,6 +45,7 @@ import com.github.damontecres.wholphin.ui.PreviewTvSpec
 import com.github.damontecres.wholphin.ui.enableMarquee
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
 import com.github.damontecres.wholphin.ui.util.LocalInterfaceCustomization
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import kotlinx.coroutines.delay
 
 @Composable
@@ -157,7 +157,7 @@ fun DiscoverItemCard(
                         Text(
                             text = pluralStringResource(it, 1),
                             style = MaterialTheme.typography.bodySmall,
-                            fontSize = 10.sp,
+                            fontSize = scaledSp(10),
                             modifier =
                                 Modifier
                                     .align(Alignment.TopStart)
@@ -224,7 +224,7 @@ fun PendingIndicator(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(R.string.fa_bell),
             fontFamily = FontAwesome,
-            fontSize = 10.sp,
+            fontSize = scaledSp(10),
             color = AppColors.Discover.Yellow,
             modifier = Modifier.align(Alignment.Center),
         )
@@ -249,7 +249,7 @@ fun AvailableIndicator(modifier: Modifier = Modifier) {
         Text(
             text = stringResource(R.string.fa_check),
             fontFamily = FontAwesome,
-            fontSize = 10.sp,
+            fontSize = scaledSp(10),
             color = Color.White,
             modifier = Modifier.align(Alignment.Center),
         )

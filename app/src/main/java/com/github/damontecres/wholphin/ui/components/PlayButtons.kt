@@ -46,7 +46,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.Icon
 import androidx.tv.material3.LocalContentColor
 import androidx.tv.material3.MaterialTheme
@@ -59,6 +58,7 @@ import com.github.damontecres.wholphin.ui.data.SortAndDirection
 import com.github.damontecres.wholphin.ui.ifElse
 import com.github.damontecres.wholphin.ui.theme.PreviewInteractionSource
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import org.jellyfin.sdk.model.api.ItemSortBy
 import org.jellyfin.sdk.model.api.SortOrder
 import kotlin.time.Duration
@@ -329,7 +329,7 @@ fun ExpandableFaButton(
                 text = stringResource(iconStringRes),
                 style = MaterialTheme.typography.titleSmall,
                 color = iconColor,
-                fontSize = 16.sp,
+                fontSize = scaledSp(16),
                 fontFamily = FontAwesome,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.align(Alignment.Center),

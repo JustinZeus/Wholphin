@@ -61,6 +61,7 @@ import com.github.damontecres.wholphin.ui.playback.AnalyticsState
 import com.github.damontecres.wholphin.ui.playback.ControllerViewState
 import com.github.damontecres.wholphin.ui.playback.CurrentPlayback
 import com.github.damontecres.wholphin.ui.playback.PlaybackDialogType
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import org.jellyfin.sdk.model.api.ImageType
 import org.jellyfin.sdk.model.api.MediaSegmentDto
 import org.jellyfin.sdk.model.api.TrickplayInfo
@@ -105,13 +106,15 @@ fun PlaybackOverlay(
 
     val density = LocalDensity.current
 
+    val titleSp = scaledSp(28)
+    val subtitleSp = scaledSp(18)
     val titleHeight =
-        remember(item?.title) {
-            if (item?.title.isNotNullOrBlank()) with(density) { titleTextSize.toDp() } else 0.dp
+        remember(item?.title, titleSp) {
+            if (item?.title.isNotNullOrBlank()) with(density) { titleSp.toDp() } else 0.dp
         }
     val subtitleHeight =
-        remember(item?.subtitleLong) {
-            if (item?.subtitleLong.isNotNullOrBlank()) with(density) { subtitleTextSize.toDp() } else 0.dp
+        remember(item?.subtitleLong, subtitleSp) {
+            if (item?.subtitleLong.isNotNullOrBlank()) with(density) { subtitleSp.toDp() } else 0.dp
         }
 
     // This will be calculated after composition

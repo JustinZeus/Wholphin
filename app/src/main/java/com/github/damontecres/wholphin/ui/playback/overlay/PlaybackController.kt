@@ -26,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.media3.common.Player
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
@@ -35,6 +34,7 @@ import com.github.damontecres.wholphin.data.model.BaseItem
 import com.github.damontecres.wholphin.ui.getTimeFormatter
 import com.github.damontecres.wholphin.ui.playback.ControllerViewState
 import com.github.damontecres.wholphin.ui.playback.PlaybackDialogType
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import org.jellyfin.sdk.model.api.MediaSegmentDto
@@ -121,9 +121,6 @@ fun PlaybackController(
     }
 }
 
-internal val titleTextSize = 28.sp
-internal val subtitleTextSize = 18.sp
-
 /**
  * A wrapper for the playback controls to show title and other information, plus the actual controls
  *
@@ -175,7 +172,7 @@ fun Controller(
                 Text(
                     text = it,
                     style = MaterialTheme.typography.titleLarge,
-                    fontSize = titleTextSize,
+                    fontSize = scaledSp(28),
                     maxLines = 1,
                     overflow = TextOverflow.MiddleEllipsis,
                     modifier = Modifier.fillMaxWidth(.75f),
@@ -192,7 +189,7 @@ fun Controller(
                     Text(
                         text = it,
                         style = MaterialTheme.typography.titleMedium,
-                        fontSize = subtitleTextSize,
+                        fontSize = scaledSp(18),
                         maxLines = 1,
                         overflow = TextOverflow.MiddleEllipsis,
                         modifier = Modifier.fillMaxWidth(.75f),

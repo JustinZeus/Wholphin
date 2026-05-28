@@ -4,9 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.sp
 import androidx.tv.material3.MaterialTheme
 import androidx.tv.material3.Text
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import org.jellyfin.sdk.model.api.BaseItemDto
 
 @Composable
@@ -34,7 +34,7 @@ fun EpisodeName(
         text = episodeName ?: "",
         color = MaterialTheme.colorScheme.onSurface,
         style = MaterialTheme.typography.headlineSmall,
-        fontSize = 20.sp,
+        fontSize = scaledSp(20),
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = modifier,

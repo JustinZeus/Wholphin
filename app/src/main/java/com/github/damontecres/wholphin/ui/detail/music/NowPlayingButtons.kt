@@ -24,7 +24,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.ui.compose.state.rememberNextButtonState
@@ -48,6 +47,7 @@ import com.github.damontecres.wholphin.ui.playback.overlay.PlaybackFaButton
 import com.github.damontecres.wholphin.ui.playback.overlay.buttonSpacing
 import com.github.damontecres.wholphin.ui.theme.PreviewInteractionSource
 import com.github.damontecres.wholphin.ui.theme.WholphinTheme
+import com.github.damontecres.wholphin.ui.util.scaledSp
 import kotlin.time.Duration.Companion.seconds
 
 @OptIn(UnstableApi::class)
@@ -176,7 +176,7 @@ fun ShuffleButton(
     ) {
         Text(
             text = stringResource(R.string.fa_shuffle),
-            fontSize = 18.sp,
+            fontSize = scaledSp(18),
             fontFamily = FontAwesome,
             textAlign = TextAlign.Center,
             color =
@@ -228,7 +228,7 @@ fun RepeatButton(
         ) {
             Text(
                 text = stringResource(R.string.fa_repeat),
-                fontSize = 18.sp,
+                fontSize = scaledSp(18),
                 fontFamily = FontAwesome,
                 textAlign = TextAlign.Center,
                 color =
@@ -253,7 +253,7 @@ fun RepeatButton(
             if (repeatMode == Player.REPEAT_MODE_ONE) {
                 Text(
                     text = "1",
-                    fontSize = 10.sp,
+                    fontSize = scaledSp(10),
                     color = MaterialTheme.colorScheme.surface,
                     modifier =
                         Modifier
