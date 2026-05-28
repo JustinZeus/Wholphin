@@ -19,17 +19,17 @@ fun DisplaySizeLevel.scaledSp(baseSp: Int): TextUnit {
         when (this) {
             DisplaySizeLevel.EXTRA_SMALL -> {
                 when (baseSp) {
-                    10 -> 9
-                    12 -> 11
+                    10 -> 8
+                    12 -> 10
                     13 -> 11
                     14 -> 12
-                    16 -> 14
-                    18 -> 16
-                    20 -> 18
-                    24 -> 21
-                    28 -> 25
-                    56 -> 49
-                    64 -> 56
+                    16 -> 13
+                    18 -> 15
+                    20 -> 17
+                    24 -> 20
+                    28 -> 24
+                    56 -> 47
+                    64 -> 54
                     else -> null
                 }
             }
@@ -42,28 +42,28 @@ fun DisplaySizeLevel.scaledSp(baseSp: Int): TextUnit {
                     14 -> 13
                     16 -> 15
                     18 -> 17
-                    20 -> 19
-                    24 -> 23
+                    20 -> 18
+                    24 -> 22
                     28 -> 26
-                    56 -> 53
-                    64 -> 60
+                    56 -> 52
+                    64 -> 59
                     else -> null
                 }
             }
 
             DisplaySizeLevel.LARGE -> {
                 when (baseSp) {
-                    10 -> 11
-                    12 -> 13
-                    13 -> 14
-                    14 -> 15
-                    16 -> 17
-                    18 -> 19
-                    20 -> 22
-                    24 -> 26
-                    28 -> 30
-                    56 -> 60
-                    64 -> 69
+                    10 -> 12
+                    12 -> 14
+                    13 -> 15
+                    14 -> 16
+                    16 -> 19
+                    18 -> 21
+                    20 -> 23
+                    24 -> 28
+                    28 -> 32
+                    56 -> 65
+                    64 -> 74
                     else -> null
                 }
             }
@@ -77,9 +77,9 @@ fun DisplaySizeLevel.scaledSp(baseSp: Int): TextUnit {
 
 fun DisplaySizeLevel.textPercent(): Int =
     when (this) {
-        DisplaySizeLevel.EXTRA_SMALL -> 88
-        DisplaySizeLevel.SMALL -> 94
-        DisplaySizeLevel.LARGE -> 108
+        DisplaySizeLevel.EXTRA_SMALL -> 84
+        DisplaySizeLevel.SMALL -> 92
+        DisplaySizeLevel.LARGE -> 116
         DisplaySizeLevel.DEFAULT, DisplaySizeLevel.UNRECOGNIZED -> 100
     }
 

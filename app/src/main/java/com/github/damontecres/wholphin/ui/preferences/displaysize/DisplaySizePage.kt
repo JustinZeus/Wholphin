@@ -1,6 +1,10 @@
 package com.github.damontecres.wholphin.ui.preferences.displaysize
 
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
@@ -35,6 +40,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.focusRestorer
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
@@ -44,6 +53,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.tv.material3.Icon
 import androidx.tv.material3.MaterialTheme
+import androidx.tv.material3.contentColorFor
 import com.github.damontecres.wholphin.R
 import com.github.damontecres.wholphin.data.model.BaseItem
 import com.github.damontecres.wholphin.preferences.AppChoicePreference
@@ -52,13 +62,18 @@ import com.github.damontecres.wholphin.preferences.AppPreferences
 import com.github.damontecres.wholphin.preferences.DisplaySizeLevel
 import com.github.damontecres.wholphin.preferences.updateInterfacePreferences
 import com.github.damontecres.wholphin.services.BackdropService
+import com.github.damontecres.wholphin.ui.SlimItemFields
+import com.github.damontecres.wholphin.ui.components.TimeDisplay
 import com.github.damontecres.wholphin.ui.data.RowColumn
+import com.github.damontecres.wholphin.ui.handleDPadKeyEvents
 import com.github.damontecres.wholphin.ui.launchIO
 import com.github.damontecres.wholphin.ui.main.HomePageContent
 import com.github.damontecres.wholphin.ui.main.settings.TitleText
-import com.github.damontecres.wholphin.ui.main.settings.settingsWidth
-import com.github.damontecres.wholphin.ui.preferences.ChoicePreference
+import com.github.damontecres.wholphin.ui.preferences.PreferenceSummary
+import com.github.damontecres.wholphin.ui.preferences.PreferenceTitle
 import com.github.damontecres.wholphin.ui.preferences.PreferencesViewModel
+import com.github.damontecres.wholphin.ui.theme.AppTypography
+import com.github.damontecres.wholphin.ui.theme.toMaterialTypography
 import com.github.damontecres.wholphin.ui.tryRequestFocus
 import com.github.damontecres.wholphin.ui.util.ResStringProvider
 import com.github.damontecres.wholphin.util.HomeRowLoadingState
@@ -79,6 +94,7 @@ private const val PREVIEW_EPISODE_COUNT = 4
 private val PREVIEW_NAV_RAIL_WIDTH_DP = 64.dp
 private val PREVIEW_NAV_ITEM_HEIGHT_DP = 56.dp
 private val PREVIEW_NAV_ICON_SIZE_DP = 24.dp
+private val DisplaySizeSettingsWidth = 300.dp
 
 private val PreviewNavRailIcons: List<ImageVector> =
     listOf(
@@ -127,6 +143,7 @@ class DisplaySizeViewModel
                         sortBy = listOf(ItemSortBy.DATE_CREATED),
                         sortOrder = listOf(SortOrder.DESCENDING),
                         limit = limit,
+                        fields = SlimItemFields,
                     )
                 val result = api.itemsApi.getItems(request).content
                 val items = (result.items ?: emptyList()).map { BaseItem.from(it, api, false) }
@@ -161,42 +178,6 @@ fun DisplaySizePage(
         Box(
             modifier =
                 Modifier
-                    .width(settingsWidth)
-                    .fillMaxHeight()
-                    .background(color = MaterialTheme.colorScheme.surface)
-                    .padding(8.dp),
-        ) {
-            DisplaySizeSettingsColumn(
-                textLevel = iface.textSizeLevel,
-                cardLevel = iface.cardSizeLevel,
-                spacingLevel = iface.spacingLevel,
-                onChangeTextLevel = { value ->
-                    scope.launch {
-                        viewModel.preferenceDataStore.updateData {
-                            it.updateInterfacePreferences { textSizeLevel = value }
-                        }
-                    }
-                },
-                onChangeCardLevel = { value ->
-                    scope.launch {
-                        viewModel.preferenceDataStore.updateData {
-                            it.updateInterfacePreferences { cardSizeLevel = value }
-                        }
-                    }
-                },
-                onChangeSpacingLevel = { value ->
-                    scope.launch {
-                        viewModel.preferenceDataStore.updateData {
-                            it.updateInterfacePreferences { spacingLevel = value }
-                        }
-                    }
-                },
-            )
-        }
-
-        Box(
-            modifier =
-                Modifier
                     .fillMaxHeight()
                     .weight(1f),
         ) {
@@ -206,6 +187,51 @@ fun DisplaySizePage(
                 showLogos = iface.showLogos,
                 onUpdateBackdrop = previewViewModel::updateBackdrop,
             )
+            if (iface.showClock) {
+                TimeDisplay()
+            }
+        }
+
+        Box(
+            modifier =
+                Modifier
+                    .width(DisplaySizeSettingsWidth)
+                    .fillMaxHeight()
+                    .background(color = MaterialTheme.colorScheme.surface)
+                    .padding(8.dp),
+        ) {
+            // Lock the settings-panel chrome to base typography so its labels
+            // don't reflow under the user as they cycle Text size levels.
+            androidx.compose.material3.MaterialTheme(typography = AppTypography.toMaterialTypography()) {
+                MaterialTheme(typography = AppTypography) {
+                    DisplaySizeSettingsColumn(
+                        textLevel = iface.textSizeLevel,
+                        cardLevel = iface.cardSizeLevel,
+                        spacingLevel = iface.spacingLevel,
+                        onChangeTextLevel = { value ->
+                            scope.launch {
+                                viewModel.preferenceDataStore.updateData {
+                                    it.updateInterfacePreferences { textSizeLevel = value }
+                                }
+                            }
+                        },
+                        onChangeCardLevel = { value ->
+                            scope.launch {
+                                viewModel.preferenceDataStore.updateData {
+                                    it.updateInterfacePreferences { cardSizeLevel = value }
+                                }
+                            }
+                        },
+                        onChangeSpacingLevel = { value ->
+                            scope.launch {
+                                viewModel.preferenceDataStore.updateData {
+                                    it.updateInterfacePreferences { spacingLevel = value }
+                                }
+                            }
+                        },
+                    )
+                }
+            }
         }
     }
 }
@@ -225,15 +251,15 @@ private fun DisplaySizeSettingsColumn(
     Column(modifier = Modifier.fillMaxSize()) {
         TitleText(stringResource(R.string.display_size))
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            contentPadding = PaddingValues(horizontal = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
             modifier =
                 Modifier
                     .fillMaxHeight()
                     .focusRestorer(firstFocus),
         ) {
             item {
-                LevelChoicePreference(
+                LevelTickSlider(
                     preference = AppPreference.TextSize,
                     currentValue = textLevel,
                     onChange = onChangeTextLevel,
@@ -241,14 +267,14 @@ private fun DisplaySizeSettingsColumn(
                 )
             }
             item {
-                LevelChoicePreference(
+                LevelTickSlider(
                     preference = AppPreference.CardSize,
                     currentValue = cardLevel,
                     onChange = onChangeCardLevel,
                 )
             }
             item {
-                LevelChoicePreference(
+                LevelTickSlider(
                     preference = AppPreference.Spacing,
                     currentValue = spacingLevel,
                     onChange = onChangeSpacingLevel,
@@ -259,22 +285,88 @@ private fun DisplaySizeSettingsColumn(
 }
 
 @Composable
-private fun LevelChoicePreference(
+private fun LevelTickSlider(
     preference: AppChoicePreference<AppPreferences, DisplaySizeLevel>,
     currentValue: DisplaySizeLevel,
     onChange: (DisplaySizeLevel) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val levelNames = stringArrayResource(preference.displayValues).toList()
-    val selectedIndex = preference.valueToIndex(currentValue)
-    ChoicePreference(
-        title = stringResource(preference.title),
-        summary = levelNames.getOrNull(selectedIndex),
-        possibleValues = levelNames,
-        selectedIndex = selectedIndex,
-        onValueChange = { onChange(preference.indexToValue(it)) },
-        modifier = modifier,
-    )
+    val labels = stringArrayResource(preference.displayValues).toList()
+    val tickCount = labels.size
+    val currentIndex = preference.valueToIndex(currentValue).coerceIn(0, tickCount - 1)
+    val interactionSource = remember { MutableInteractionSource() }
+    val focused by interactionSource.collectIsFocusedAsState()
+    val background =
+        if (focused) MaterialTheme.colorScheme.inverseSurface else Color.Unspecified
+    val contentColor = contentColorFor(background)
+    val activeColor = MaterialTheme.colorScheme.primary
+    val inactiveColor = MaterialTheme.colorScheme.surfaceVariant
+
+    Column(
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier =
+            modifier
+                .fillMaxWidth()
+                .background(background, shape = RoundedCornerShape(8.dp))
+                .padding(horizontal = 12.dp, vertical = 10.dp)
+                .handleDPadKeyEvents(
+                    onLeft = {
+                        if (currentIndex > 0) {
+                            onChange(preference.indexToValue(currentIndex - 1))
+                        }
+                    },
+                    onRight = {
+                        if (currentIndex < tickCount - 1) {
+                            onChange(preference.indexToValue(currentIndex + 1))
+                        }
+                    },
+                ).focusable(interactionSource = interactionSource),
+    ) {
+        PreferenceTitle(stringResource(preference.title), color = contentColor)
+        ScrollbarTrack(
+            currentIndex = currentIndex,
+            tickCount = tickCount,
+            activeColor = activeColor,
+            inactiveColor = inactiveColor,
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .height(24.dp),
+        )
+        PreferenceSummary(labels.getOrNull(currentIndex), color = contentColor)
+    }
+}
+
+@Composable
+private fun ScrollbarTrack(
+    currentIndex: Int,
+    tickCount: Int,
+    activeColor: Color,
+    inactiveColor: Color,
+    modifier: Modifier = Modifier,
+) {
+    Canvas(modifier = modifier) {
+        val trackRadius = size.height / 2f
+        drawRoundRect(
+            color = inactiveColor,
+            cornerRadius = CornerRadius(trackRadius, trackRadius),
+        )
+        if (tickCount <= 0) return@Canvas
+        val padding = size.height * 0.06f
+        val thumbHeight = size.height - padding * 2f
+        val thumbRadius = thumbHeight / 2f
+        val slotWidth = (size.width - padding * 2f) / tickCount
+        val thumbWidthIdeal = slotWidth * 0.9f
+        val thumbWidth = thumbWidthIdeal.coerceAtLeast(thumbHeight)
+        val slotCenter = padding + slotWidth * (currentIndex + 0.5f)
+        val thumbLeft = (slotCenter - thumbWidth / 2f).coerceIn(padding, size.width - padding - thumbWidth)
+        drawRoundRect(
+            color = activeColor,
+            topLeft = Offset(thumbLeft, padding),
+            size = Size(thumbWidth, thumbHeight),
+            cornerRadius = CornerRadius(thumbRadius, thumbRadius),
+        )
+    }
 }
 
 @Composable
@@ -289,8 +381,8 @@ private fun DisplaySizePreview(
     val previewRows =
         remember(posters, episodes) {
             listOf(
-                HomeRowLoadingState.Success(title = recentlyAddedTitle, items = posters),
                 HomeRowLoadingState.Success(title = nextUpTitle, items = episodes),
+                HomeRowLoadingState.Success(title = recentlyAddedTitle, items = posters),
             )
         }
     var position by remember { mutableStateOf(RowColumn(0, 0)) }
